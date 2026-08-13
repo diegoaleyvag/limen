@@ -1,0 +1,486 @@
+{
+  "$defs": {
+    "BudgetUsage": {
+      "description": "How much of a [`Budget`] was actually used.\n\nThe invariant `used_tokens <= requested_tokens` (and therefore\n`remaining_tokens == requested_tokens - used_tokens` without underflow) must always hold.\nConstruct instances through [`BudgetUsage::new`], which clamps `used_tokens` down to\n`requested_tokens` rather than ever panicking or producing an underflowed `remaining_tokens`\n(per the crate-wide \"no panics escaping a public function\" rule) -- a strategy implementation\nthat ever hits the clamp has a bug, but callers of this type must not be able to crash because\nof it. Directly constructing the struct literal (its fields are `pub`, e.g. for\ndeserialization) bypasses this guarantee; prefer `::new` wherever a value is being computed\nrather than deserialized from an already-trusted artifact.",
+      "properties": {
+        "remaining_tokens": {
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "requested_tokens": {
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "used_tokens": {
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "requested_tokens",
+        "used_tokens",
+        "remaining_tokens"
+      ],
+      "type": "object"
+    },
+    "CitationRetention": {
+      "properties": {
+        "expected": {
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "per_fact": {
+          "items": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ],
+            "type": "array"
+          },
+          "type": "array"
+        },
+        "retained": {
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "retained",
+        "expected",
+        "per_fact"
+      ],
+      "type": "object"
+    },
+    "ContradictionOutcome": {
+      "description": "Purely structural outcome for one [`crate::model::ContradictionGroup`]. Never a truth\njudgement -- see the module doc comment for the precise `Split` vs `PartialWithinRetained`\nrule.",
+      "enum": [
+        "all_retained",
+        "split",
+        "partial_within_retained",
+        "none_retained"
+      ],
+      "type": "string"
+    },
+    "ContradictionResult": {
+      "properties": {
+        "group_id": {
+          "type": "string"
+        },
+        "outcome": {
+          "$ref": "#/$defs/ContradictionOutcome"
+        }
+      },
+      "required": [
+        "group_id",
+        "outcome"
+      ],
+      "type": "object"
+    },
+    "DistortionIndicator": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "evidence_clipped": {
+              "properties": {
+                "fact_id": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "fact_id"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "evidence_clipped"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "qualifier_dropped": {
+              "properties": {
+                "fact_id": {
+                  "type": "string"
+                },
+                "qualifier": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "fact_id",
+                "qualifier"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "qualifier_dropped"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "provenance_reordered": {
+              "properties": {
+                "source_id": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "source_id"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "provenance_reordered"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "contradiction_split": {
+              "properties": {
+                "group_id": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "group_id"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "contradiction_split"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "distractor_retained": {
+              "properties": {
+                "source_id": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "source_id"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "distractor_retained"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "FactRecall": {
+      "properties": {
+        "per_fact": {
+          "items": {
+            "$ref": "#/$defs/FactRecallDetail"
+          },
+          "type": "array"
+        },
+        "required": {
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "retained": {
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "retained",
+        "required",
+        "per_fact"
+      ],
+      "type": "object"
+    },
+    "FactRecallDetail": {
+      "properties": {
+        "fact_id": {
+          "type": "string"
+        },
+        "missing_components": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "retained": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "fact_id",
+        "retained",
+        "missing_components"
+      ],
+      "type": "object"
+    },
+    "ItemSelectionRecord": {
+      "description": "What happened to one original source item under a strategy's selection.",
+      "properties": {
+        "included_byte_end": {
+          "format": "uint32",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "included_byte_start": {
+          "description": "For `Included`/`Partial` items, the byte range of the *original source text* that was\nretained (for `Included`, this is always `[0, text.len())`). For transform strategies this\ndoubles as a provenance pointer into the source even when `output_text` differs from the\nverbatim slice. `None` for `Dropped` items.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "order_index": {
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "output_text": {
+          "description": "Present only for transform strategies (structured-extraction, hierarchical-summary) whose\nemitted text differs from the verbatim source slice. When `Some`, metrics and budget\naccounting treat this text -- not the verbatim slice -- as \"the output\" for this item.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_id": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/SelectionStatus"
+        }
+      },
+      "required": [
+        "source_id",
+        "order_index",
+        "status"
+      ],
+      "type": "object"
+    },
+    "Metrics": {
+      "properties": {
+        "budget": {
+          "$ref": "#/$defs/BudgetUsage"
+        },
+        "citation_retention": {
+          "$ref": "#/$defs/CitationRetention"
+        },
+        "contradictions": {
+          "items": {
+            "$ref": "#/$defs/ContradictionResult"
+          },
+          "type": "array"
+        },
+        "distortion_indicators": {
+          "items": {
+            "$ref": "#/$defs/DistortionIndicator"
+          },
+          "type": "array"
+        },
+        "fact_recall": {
+          "$ref": "#/$defs/FactRecall"
+        },
+        "numeric_date_accuracy": {
+          "$ref": "#/$defs/NumericDateAccuracy"
+        }
+      },
+      "required": [
+        "fact_recall",
+        "contradictions",
+        "numeric_date_accuracy",
+        "citation_retention",
+        "budget",
+        "distortion_indicators"
+      ],
+      "type": "object"
+    },
+    "NumericDateAccuracy": {
+      "properties": {
+        "checked": {
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "exact": {
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "mismatches": {
+          "description": "`fact_id`s of every checked `Number`/`Date` component that was not exactly retained. May\ncontain repeats if a single fact has multiple mismatching numeric/date components.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "exact",
+        "checked",
+        "mismatches"
+      ],
+      "type": "object"
+    },
+    "SelectionOutput": {
+      "description": "The full output of running one [`SelectionStrategy`] against a [`StrategyInput`] and\n[`Budget`].",
+      "properties": {
+        "budget": {
+          "$ref": "#/$defs/BudgetUsage"
+        },
+        "selection": {
+          "items": {
+            "$ref": "#/$defs/ItemSelectionRecord"
+          },
+          "type": "array"
+        },
+        "strategy_id": {
+          "description": "Exact registry id, e.g. `\"recency@1\"`.",
+          "type": "string"
+        },
+        "trace": {
+          "items": {
+            "$ref": "#/$defs/TraceStep"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "strategy_id",
+        "budget",
+        "selection",
+        "trace"
+      ],
+      "type": "object"
+    },
+    "SelectionStatus": {
+      "description": "Whether a source item survived a strategy's selection.",
+      "enum": [
+        "included",
+        "partial",
+        "dropped"
+      ],
+      "type": "string"
+    },
+    "TraceStep": {
+      "description": "One step of a strategy's deterministic decision trace.",
+      "properties": {
+        "action": {
+          "description": "Stable short code, e.g. `\"considered\"`, `\"included_full\"`, `\"included_partial\"`,\n`\"dropped_over_budget\"`, `\"extracted\"`, `\"templated\"`.",
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "score": {
+          "description": "Integer score if the strategy is score-based; `None` otherwise.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "source_id": {
+          "type": "string"
+        },
+        "step_index": {
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "step_index",
+        "source_id",
+        "action",
+        "detail"
+      ],
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "The full, self-describing, hashable record of one trial (one scenario x one strategy x one\nbudget).",
+  "properties": {
+    "engine_version": {
+      "description": "`limen-core`'s own package version (`env!(\"CARGO_PKG_VERSION\")`), i.e.\n[`crate::ENGINE_VERSION`].",
+      "type": "string"
+    },
+    "metrics": {
+      "$ref": "#/$defs/Metrics"
+    },
+    "result_digest": {
+      "description": "`\"sha256:...\"` digest of the canonical `TrialResult` with this field blanked. Computed and\nverified via `crate::canonical::digest_with_field_blanked(result, \"result_digest\")`.",
+      "type": "string"
+    },
+    "scenario_content_digest": {
+      "type": "string"
+    },
+    "scenario_id": {
+      "type": "string"
+    },
+    "scenario_version": {
+      "type": "string"
+    },
+    "schema_version": {
+      "description": "Result schema version, e.g. `\"1.0.0\"`.",
+      "type": "string"
+    },
+    "selection": {
+      "$ref": "#/$defs/SelectionOutput"
+    },
+    "strategy_id": {
+      "description": "Exact registry id, e.g. `\"recency@1\"`. Matches `selection.strategy_id`.",
+      "type": "string"
+    },
+    "tokenizer_id": {
+      "description": "Always [`crate::tokenizer::TOKENIZER_ID`].",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "engine_version",
+    "tokenizer_id",
+    "scenario_id",
+    "scenario_version",
+    "scenario_content_digest",
+    "strategy_id",
+    "selection",
+    "metrics",
+    "result_digest"
+  ],
+  "title": "TrialResult",
+  "type": "object"
+}

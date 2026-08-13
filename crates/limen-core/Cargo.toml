@@ -1,0 +1,19 @@
+[package]
+name = "limen-core"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+description = "Deterministic context-selection benchmarking engine: manifests, tokenizer, canonical artifacts, validation, strategy interface, and metrics."
+
+[dependencies]
+schemars = "1.2.2"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+sha2 = "0.11.0"
+
+[dev-dependencies]
+# `default-features = false`: our schemas have no remote/file `$ref`s to resolve, so the bundled
+# HTTP (`reqwest`)/file retrievers are unnecessary weight in the dev-dependency tree; validation
+# itself is always synchronous, in-memory data only, regardless of this feature choice.
+jsonschema = { version = "0.52.0", default-features = false }
+proptest = "1.11.0"

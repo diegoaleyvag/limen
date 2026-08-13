@@ -1,0 +1,300 @@
+{
+  "$defs": {
+    "CanonicalValue": {
+      "description": "A canonical, machine-checkable value backing a [`FactComponent`].\n\nNumbers and dates are represented as their canonical *textual* form (never as `f32`/`f64`) so\ncomparisons are exact string/substring checks with no float-precision or locale ambiguity.",
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "description": "Exact textual canonical form of a number, e.g. `\"42\"` or `\"3.5\"`, with an optional unit\nstring, e.g. `\"ms\"`, that must also survive verbatim for the value to count as retained.",
+          "properties": {
+            "number": {
+              "properties": {
+                "normalized": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "normalized"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "number"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "description": "Canonical calendar form, e.g. `\"2024-01-05\"`. Produced by simple string parsing only --\nnever locale-aware parsing or `Date`/timezone APIs -- since scenario authors write the\ncanonical form directly rather than deriving it at validation time.",
+          "properties": {
+            "date": {
+              "properties": {
+                "normalized": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "normalized"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "date"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "description": "Canonical form of a free-text value that still needs exact-substring verification.",
+          "properties": {
+            "text": {
+              "properties": {
+                "normalized": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "normalized"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "text"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "ContextItem": {
+      "description": "One source item of context available to a strategy.",
+      "properties": {
+        "order_index": {
+          "description": "0-based original order. Recency/order-based strategies use this directly; nothing in\n`limen-core` ever parses dates/timestamps out of `text` to infer recency.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "section_label": {
+          "description": "Strategy-visible structural hint, e.g. `\"log_line\"`, `\"chat_message\"`, `\"spec_section\"`.\nMust never reveal evaluator intent (which facts matter, which items are distractors, etc).",
+          "type": "string"
+        },
+        "source_id": {
+          "description": "Unique within a scenario.",
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "order_index",
+        "section_label",
+        "text"
+      ],
+      "type": "object"
+    },
+    "ContradictionGroup": {
+      "description": "A set of mutually competing claim locations. Purely structural: never labels any member as\n\"true\"; metrics over a contradiction group measure only which members survived selection.",
+      "properties": {
+        "group_id": {
+          "type": "string"
+        },
+        "members": {
+          "items": {
+            "$ref": "#/$defs/EvidenceSpan"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "group_id",
+        "members"
+      ],
+      "type": "object"
+    },
+    "EvidenceSpan": {
+      "description": "A byte-span pointer into one source item's `text`, `[byte_start, byte_end)`.",
+      "properties": {
+        "byte_end": {
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "byte_start": {
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "source_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "byte_start",
+        "byte_end"
+      ],
+      "type": "object"
+    },
+    "ExpectedFact": {
+      "description": "One fact a scenario expects a good strategy to preserve.",
+      "properties": {
+        "components": {
+          "description": "`> 1` components makes this a composite fact; **all** components must be satisfied for\nthe fact to be \"retained\".",
+          "items": {
+            "$ref": "#/$defs/FactComponent"
+          },
+          "type": "array"
+        },
+        "expected_citation_source_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "fact_id": {
+          "type": "string"
+        },
+        "statement": {
+          "type": "string"
+        },
+        "why_it_matters": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "fact_id",
+        "statement",
+        "why_it_matters",
+        "components",
+        "expected_citation_source_ids"
+      ],
+      "type": "object"
+    },
+    "FactComponent": {
+      "description": "One atomic, independently-checkable piece of an [`ExpectedFact`].\n\nA composite fact (`components.len() > 1`) requires **all** of its components to be retained.\nWithin a single component, `evidence` is a list of *redundant* alternatives: any one surviving\nalternative is sufficient for that component to count as retained.",
+      "properties": {
+        "canonical_value": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CanonicalValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "component_id": {
+          "type": "string"
+        },
+        "evidence": {
+          "description": "One-of-many redundant evidence locations; any surviving alternative satisfies this\ncomponent.",
+          "items": {
+            "$ref": "#/$defs/EvidenceSpan"
+          },
+          "type": "array"
+        },
+        "required_qualifiers": {
+          "description": "Exact substrings (e.g. a unit, a negation word, a qualifier) that must remain present\nverbatim in the corresponding output for this component to count as non-distorted.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "component_id",
+        "evidence",
+        "required_qualifiers"
+      ],
+      "type": "object"
+    },
+    "ScenarioAnnotations": {
+      "description": "Evaluator-only annotations for a scenario. Never exposed to a [`SelectionStrategy`] (see\n[`StrategyInput`], which structurally cannot carry these fields).",
+      "properties": {
+        "contradiction_groups": {
+          "items": {
+            "$ref": "#/$defs/ContradictionGroup"
+          },
+          "type": "array"
+        },
+        "distractor_source_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "required_facts": {
+          "items": {
+            "$ref": "#/$defs/ExpectedFact"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "required_facts",
+        "distractor_source_ids",
+        "contradiction_groups"
+      ],
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "A complete, versioned scenario: ordered source items plus evaluator-only annotations.",
+  "properties": {
+    "annotations": {
+      "$ref": "#/$defs/ScenarioAnnotations"
+    },
+    "content_digest": {
+      "description": "`\"sha256:<hex>\"` digest of the canonical manifest with this field blanked. Computed and\nverified via `crate::canonical::digest_with_field_blanked(manifest, \"content_digest\")`.",
+      "type": "string"
+    },
+    "items": {
+      "description": "Ordered source items.",
+      "items": {
+        "$ref": "#/$defs/ContextItem"
+      },
+      "type": "array"
+    },
+    "scenario_id": {
+      "type": "string"
+    },
+    "scenario_version": {
+      "description": "Scenario content version, e.g. `\"1.0.0\"` (`MAJOR.MINOR.PATCH`, numeric parts only).",
+      "type": "string"
+    },
+    "schema_version": {
+      "description": "Manifest schema version, e.g. `\"1.0.0\"` (`MAJOR.MINOR.PATCH`, numeric parts only).",
+      "type": "string"
+    },
+    "task_query": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "scenario_id",
+    "scenario_version",
+    "title",
+    "task_query",
+    "items",
+    "annotations",
+    "content_digest"
+  ],
+  "title": "ScenarioManifest",
+  "type": "object"
+}
