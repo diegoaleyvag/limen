@@ -1,0 +1,464 @@
+{
+  "schema_version": "1.0.0",
+  "scenario_id": "incident-investigation",
+  "scenario_version": "1.0.0",
+  "title": "Checkout Latency Incident INC-4471",
+  "task_query": "What caused the incident, how severe was it, and how was it resolved?",
+  "items": [
+    {
+      "source_id": "alert-1",
+      "order_index": 0,
+      "section_label": "monitoring_alert",
+      "text": "ALERT INC-4471 2025-03-11T14:02:00Z service=orders-api metric=p99_latency_ms value=180 threshold=150 severity=warning"
+    },
+    {
+      "source_id": "alert-2",
+      "order_index": 1,
+      "section_label": "monitoring_alert",
+      "text": "ALERT INC-4471 2025-03-11T14:07:00Z service=orders-api metric=p99_latency_ms value=420 threshold=150 severity=critical error_rate_pct=2.1"
+    },
+    {
+      "source_id": "chat-1",
+      "order_index": 2,
+      "section_label": "chat_message",
+      "text": "Priya Nandan: paging in on INC-4471, orders-api p99 just hit 420ms and error rate is 2.1 percent, declaring this critical now."
+    },
+    {
+      "source_id": "chat-9",
+      "order_index": 3,
+      "section_label": "chat_message",
+      "text": "Alex Chen: heads up, the payments-api TLS certificate renews automatically on 2025-04-02, no action needed from on-call."
+    },
+    {
+      "source_id": "chat-2",
+      "order_index": 4,
+      "section_label": "chat_message",
+      "text": "Sam Rivera: the checkout-service deploy at 13:55 UTC is almost certainly the cause, let's roll it back first."
+    },
+    {
+      "source_id": "chat-3",
+      "order_index": 5,
+      "section_label": "chat_message",
+      "text": "Jordan Blake: might also be the CDN, they had a wobble last week. Worth checking their status page before we touch anything else."
+    },
+    {
+      "source_id": "log-1",
+      "order_index": 6,
+      "section_label": "log_line",
+      "text": "2025-03-11T14:09:41Z orders-api WARN payments-db-primary connection_pool_wait_ms=310 active_connections=200 max_connections=200"
+    },
+    {
+      "source_id": "chat-4",
+      "order_index": 7,
+      "section_label": "chat_message",
+      "text": "Priya Nandan: rolled checkout-service back to v2.2.9 at 14:15 UTC. Latency is still climbing, so the deploy does not look like the cause."
+    },
+    {
+      "source_id": "log-2",
+      "order_index": 8,
+      "section_label": "log_line",
+      "text": "2025-03-11T14:18:22Z orders-api ERROR payments-db-primary connection_timeout_ms=5000 pool_exhausted=true active_connections=200"
+    },
+    {
+      "source_id": "chat-5",
+      "order_index": 9,
+      "section_label": "chat_message",
+      "text": "Sam Rivera: rollback finished but I still think the deploy is related somehow, the timing lined up too well to be a coincidence."
+    },
+    {
+      "source_id": "chat-6",
+      "order_index": 10,
+      "section_label": "chat_message",
+      "text": "Jordan Blake: checked the CDN provider status page, no incidents logged for 2025-03-11. Ruling out the CDN."
+    },
+    {
+      "source_id": "log-3",
+      "order_index": 11,
+      "section_label": "log_line",
+      "text": "2025-03-11T14:44:05Z orders-api INFO migration_job=migrate-2091 status=killed triggered_by=priya.nandan"
+    },
+    {
+      "source_id": "chat-7",
+      "order_index": 12,
+      "section_label": "chat_message",
+      "text": "Priya Nandan: found it, migrate-2091 was a schema migration originally scheduled for the 2025-03-10 maintenance window. It ran late and held a lock on payments-db-primary, exhausting the connection pool. Killed the job at 14:45 UTC."
+    },
+    {
+      "source_id": "chat-8",
+      "order_index": 13,
+      "section_label": "chat_message",
+      "text": "Priya Nandan: connection pool recovered right after, p99 latency is back to 95ms baseline as of 14:52 UTC. Standing down from critical."
+    },
+    {
+      "source_id": "log-4",
+      "order_index": 14,
+      "section_label": "log_line",
+      "text": "2025-03-11T14:53:10Z orders-api INFO p99_latency_ms=95 error_rate_pct=0.1 status=stable"
+    },
+    {
+      "source_id": "note-1",
+      "order_index": 15,
+      "section_label": "postmortem_note",
+      "text": "Draft postmortem for INC-4471, prepared 2025-03-12. Root cause: a stuck schema migration (migrate-2091) held a lock on payments-db-primary and exhausted its connection pool, not the checkout-service deploy. Incident was declared critical at 14:07 UTC on 2025-03-11 and resolved at 14:52 UTC the same day, a duration of 45 minutes. Baseline throughput for orders-api is 640 requests/sec; peak error rate during the incident reached 2.1 percent."
+    }
+  ],
+  "annotations": {
+    "required_facts": [
+      {
+        "fact_id": "f-onset-latency",
+        "statement": "orders-api p99 latency reached 420ms when the incident was declared critical.",
+        "why_it_matters": "Establishes the peak severity of the incident in the primary metric the team pages on; without this number a reader cannot judge how bad the incident actually got.",
+        "components": [
+          {
+            "component_id": "c-onset-latency-420",
+            "evidence": [
+              {
+                "source_id": "alert-2",
+                "byte_start": 83,
+                "byte_end": 86
+              }
+            ],
+            "canonical_value": {
+              "number": {
+                "normalized": "420",
+                "unit": "ms"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "alert-2"
+        ]
+      },
+      {
+        "fact_id": "f-onset-error-rate",
+        "statement": "The error rate for orders-api reached 2.1 percent at the peak of the incident.",
+        "why_it_matters": "Error rate alongside latency is needed to judge whether requests were merely slow or actually failing outright, which changes the customer-facing severity assessment.",
+        "components": [
+          {
+            "component_id": "c-error-rate-2-1",
+            "evidence": [
+              {
+                "source_id": "alert-2",
+                "byte_start": 134,
+                "byte_end": 137
+              }
+            ],
+            "canonical_value": {
+              "number": {
+                "normalized": "2.1",
+                "unit": "pct"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "alert-2"
+        ]
+      },
+      {
+        "fact_id": "f-recovery-latency",
+        "statement": "Latency recovered to a 95ms baseline by the end of the incident.",
+        "why_it_matters": "Confirms the incident actually ended with a return to normal performance, rather than merely being downgraded in severity while still degraded.",
+        "components": [
+          {
+            "component_id": "c-recovery-95",
+            "evidence": [
+              {
+                "source_id": "chat-8",
+                "byte_start": 76,
+                "byte_end": 80
+              },
+              {
+                "source_id": "log-4",
+                "byte_start": 52,
+                "byte_end": 54
+              }
+            ],
+            "canonical_value": {
+              "number": {
+                "normalized": "95",
+                "unit": "ms"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "chat-8",
+          "log-4"
+        ]
+      },
+      {
+        "fact_id": "f-deploy-ruled-out",
+        "statement": "The on-call engineer determined the checkout-service deploy was not the cause of the incident after rolling it back.",
+        "why_it_matters": "Prevents a reader from wrongly concluding the deploy was the root cause just because it was the first suspect; preserving the negation is essential to not misattributing the incident.",
+        "components": [
+          {
+            "component_id": "c-deploy-not-cause",
+            "evidence": [
+              {
+                "source_id": "chat-4",
+                "byte_start": 97,
+                "byte_end": 136
+              }
+            ],
+            "canonical_value": {
+              "text": {
+                "normalized": "deploy"
+              }
+            },
+            "required_qualifiers": [
+              "not"
+            ]
+          }
+        ],
+        "expected_citation_source_ids": [
+          "chat-4"
+        ]
+      },
+      {
+        "fact_id": "f-root-cause-migration-job",
+        "statement": "The root cause was the stuck schema migration job migrate-2091, which exhausted the payments-db-primary connection pool.",
+        "why_it_matters": "This is the actual root cause the whole investigation was searching for; a strategy that keeps only the job id or only the exhaustion mechanism, but not both, cannot support a complete causal explanation.",
+        "components": [
+          {
+            "component_id": "c-root-cause-job-id",
+            "evidence": [
+              {
+                "source_id": "log-3",
+                "byte_start": 51,
+                "byte_end": 63
+              },
+              {
+                "source_id": "chat-7",
+                "byte_start": 24,
+                "byte_end": 36
+              }
+            ],
+            "canonical_value": {
+              "text": {
+                "normalized": "migrate-2091"
+              }
+            },
+            "required_qualifiers": []
+          },
+          {
+            "component_id": "c-root-cause-pool-exhaustion",
+            "evidence": [
+              {
+                "source_id": "log-2",
+                "byte_start": 85,
+                "byte_end": 99
+              }
+            ],
+            "canonical_value": {
+              "text": {
+                "normalized": "pool_exhausted"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "log-3",
+          "chat-7",
+          "log-2"
+        ]
+      },
+      {
+        "fact_id": "f-incident-duration",
+        "statement": "The incident window ran from 14:07 UTC to 14:52 UTC on 2025-03-11, a 45-minute duration.",
+        "why_it_matters": "Both the start and end times are needed to compute how long the incident actually lasted; keeping only one endpoint makes the duration unrecoverable.",
+        "components": [
+          {
+            "component_id": "c-incident-start",
+            "evidence": [
+              {
+                "source_id": "alert-2",
+                "byte_start": 26,
+                "byte_end": 31
+              },
+              {
+                "source_id": "note-1",
+                "byte_start": 241,
+                "byte_end": 246
+              }
+            ],
+            "canonical_value": {
+              "text": {
+                "normalized": "14:07"
+              }
+            },
+            "required_qualifiers": []
+          },
+          {
+            "component_id": "c-incident-end",
+            "evidence": [
+              {
+                "source_id": "chat-8",
+                "byte_start": 96,
+                "byte_end": 101
+              },
+              {
+                "source_id": "note-1",
+                "byte_start": 281,
+                "byte_end": 286
+              }
+            ],
+            "canonical_value": {
+              "text": {
+                "normalized": "14:52"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "alert-2",
+          "chat-8",
+          "note-1"
+        ]
+      },
+      {
+        "fact_id": "f-migration-schedule-date",
+        "statement": "The migration job had originally been scheduled for the 2025-03-10 maintenance window, a day before it actually ran.",
+        "why_it_matters": "Explains why a routine migration turned dangerous: it ran outside its intended low-traffic window, which is the key lesson for preventing a repeat.",
+        "components": [
+          {
+            "component_id": "c-migration-scheduled-date",
+            "evidence": [
+              {
+                "source_id": "chat-7",
+                "byte_start": 89,
+                "byte_end": 99
+              }
+            ],
+            "canonical_value": {
+              "date": {
+                "normalized": "2025-03-10"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "chat-7"
+        ]
+      },
+      {
+        "fact_id": "f-postmortem-date",
+        "statement": "The draft postmortem was prepared on 2025-03-12, one day after the incident.",
+        "why_it_matters": "Indicates how fresh the documented account is relative to the incident, which affects how much the write-up should be trusted over live chat reconstructions.",
+        "components": [
+          {
+            "component_id": "c-postmortem-authored-date",
+            "evidence": [
+              {
+                "source_id": "note-1",
+                "byte_start": 40,
+                "byte_end": 50
+              }
+            ],
+            "canonical_value": {
+              "date": {
+                "normalized": "2025-03-12"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "note-1"
+        ]
+      },
+      {
+        "fact_id": "f-incident-date",
+        "statement": "The incident occurred on 2025-03-11.",
+        "why_it_matters": "Anchors the entire timeline to one calendar date, distinguishing it from the unrelated prior-week CDN issue Jordan initially considered.",
+        "components": [
+          {
+            "component_id": "c-incident-calendar-date",
+            "evidence": [
+              {
+                "source_id": "alert-1",
+                "byte_start": 15,
+                "byte_end": 25
+              },
+              {
+                "source_id": "alert-2",
+                "byte_start": 15,
+                "byte_end": 25
+              }
+            ],
+            "canonical_value": {
+              "date": {
+                "normalized": "2025-03-11"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "alert-1"
+        ]
+      },
+      {
+        "fact_id": "f-baseline-throughput",
+        "statement": "orders-api normally sustains a baseline throughput of 640 requests/sec.",
+        "why_it_matters": "Gives the reader a reference point for normal operation, which is necessary context for judging how abnormal the incident's latency and error-rate numbers actually were.",
+        "components": [
+          {
+            "component_id": "c-baseline-throughput-640",
+            "evidence": [
+              {
+                "source_id": "note-1",
+                "byte_start": 369,
+                "byte_end": 385
+              }
+            ],
+            "canonical_value": {
+              "number": {
+                "normalized": "640",
+                "unit": "requests/sec"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "note-1"
+        ]
+      }
+    ],
+    "distractor_source_ids": [
+      "chat-3",
+      "chat-9"
+    ],
+    "contradiction_groups": [
+      {
+        "group_id": "g-incident-root-cause-dispute",
+        "members": [
+          {
+            "source_id": "chat-2",
+            "byte_start": 12,
+            "byte_end": 82
+          },
+          {
+            "source_id": "chat-4",
+            "byte_start": 97,
+            "byte_end": 136
+          },
+          {
+            "source_id": "chat-5",
+            "byte_start": 34,
+            "byte_end": 77
+          }
+        ]
+      }
+    ]
+  },
+  "content_digest": "sha256:c8cedb8eae1076fe70d9151a9aaf110ace10cb8fb6ea37019ec9c927192ea3c8"
+}

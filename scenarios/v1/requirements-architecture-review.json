@@ -1,0 +1,437 @@
+{
+  "schema_version": "1.0.0",
+  "scenario_id": "requirements-architecture-review",
+  "scenario_version": "1.0.0",
+  "title": "Inventory Lookup Service Caching Architecture Review",
+  "task_query": "What does the system need to satisfy, and what architecture decision best fits those constraints?",
+  "items": [
+    {
+      "source_id": "req-1",
+      "order_index": 0,
+      "section_label": "requirements_excerpt",
+      "text": "Requirements excerpt REQ-118, v1: the Inventory Lookup Service must sustain 500 requests/sec at p99 latency under 200ms. Multi-region read replication is mandatory for compliance with the Data Residency Directive."
+    },
+    {
+      "source_id": "req-2",
+      "order_index": 1,
+      "section_label": "requirements_excerpt",
+      "text": "Requirements excerpt REQ-119: infrastructure budget for the Inventory Lookup Service is capped at $4000 per month, inclusive of caching infrastructure."
+    },
+    {
+      "source_id": "meeting-4",
+      "order_index": 2,
+      "section_label": "meeting_notes",
+      "text": "Meeting notes, 2025-05-20. Attendees: Priyanka Suresh, Casey Whitfield. Mobile app redesign kickoff scheduled for next quarter; design review cadence will follow the same weekly Tuesday slot used for the Inventory Lookup Service reviews."
+    },
+    {
+      "source_id": "meeting-1",
+      "order_index": 3,
+      "section_label": "meeting_notes",
+      "text": "Design review meeting notes, 2025-06-02. Attendees: Morgan Ellis, Priyanka Suresh, Lena Ferraro. Discussed two caching options: a single-node in-memory cache, and a distributed cache cluster. Lena to draft an architecture decision record."
+    },
+    {
+      "source_id": "adr-draft-1",
+      "order_index": 4,
+      "section_label": "architecture_decision_draft",
+      "text": "Architecture decision draft ADR-07 by Lena Ferraro, 2025-06-05. Initial recommendation: adopt the single-node in-memory cache for simplicity and lower cost."
+    },
+    {
+      "source_id": "meeting-2",
+      "order_index": 5,
+      "section_label": "meeting_notes",
+      "text": "Design review meeting notes, 2025-06-09. Attendees: Morgan Ellis, Lena Ferraro, Devon Ashworth. Load testing showed the single-node in-memory cache cannot sustain 500 requests/sec once multi-region replication is added; the team reversed course toward a distributed cache cluster."
+    },
+    {
+      "source_id": "adr-draft-2",
+      "order_index": 6,
+      "section_label": "architecture_decision_draft",
+      "text": "Architecture decision draft ADR-07, revision 2, by Lena Ferraro, 2025-06-10. Final recommendation: adopt a distributed cache cluster using a cache-aside pattern across three regions, to satisfy both the 500 requests/sec throughput requirement and the Data Residency Directive's replication mandate."
+    },
+    {
+      "source_id": "email-1",
+      "order_index": 7,
+      "section_label": "stakeholder_email",
+      "text": "Email from Casey Whitfield to Morgan Ellis, 2025-06-11: the multi-region replication requirement is no longer needed for launch; the compliance deadline was pushed out and we should simplify the design to cut cost."
+    },
+    {
+      "source_id": "email-2",
+      "order_index": 8,
+      "section_label": "stakeholder_email",
+      "text": "Email from Devon Ashworth to Morgan Ellis, 2025-06-12: multi-region read replication remains mandatory under the Data Residency Directive for any service launching after 2025-09-01; this has not changed regardless of the launch date."
+    },
+    {
+      "source_id": "risk-1",
+      "order_index": 9,
+      "section_label": "risk_register",
+      "text": "Risk register entry RISK-22: likelihood medium, impact high. If the distributed cache cluster is not deployed across all three required regions before 2025-09-01, the service risks non-compliance with the Data Residency Directive."
+    },
+    {
+      "source_id": "budget-note-1",
+      "order_index": 10,
+      "section_label": "stakeholder_email",
+      "text": "Email from Casey Whitfield to Finance, 2025-06-13: please also renew the office snack budget for Q3, separate line item from infrastructure."
+    },
+    {
+      "source_id": "risk-2",
+      "order_index": 11,
+      "section_label": "risk_register",
+      "text": "Risk register entry RISK-23: likelihood low, impact medium. Cross-region network latency between cache nodes could add up to 15ms of replication lag under peak load."
+    },
+    {
+      "source_id": "meeting-3",
+      "order_index": 12,
+      "section_label": "meeting_notes",
+      "text": "Design review meeting notes, 2025-06-16. Attendees: Morgan Ellis, Priyanka Suresh, Devon Ashworth, Lena Ferraro. Confirmed the Data Residency Directive requirement stands; Casey's cost-cutting proposal was declined. Distributed cache cluster with three-region replication remains the plan."
+    },
+    {
+      "source_id": "email-3",
+      "order_index": 13,
+      "section_label": "stakeholder_email",
+      "text": "Email from Priyanka Suresh to the design review list, 2025-06-17: benchmark estimates for the distributed cache cluster show p99 latency of 165ms at 500 requests/sec, under our 200ms requirement."
+    },
+    {
+      "source_id": "adr-final",
+      "order_index": 14,
+      "section_label": "architecture_decision_draft",
+      "text": "Architecture decision record ADR-07, approved 2025-06-18. Approved by Morgan Ellis and Devon Ashworth. Final architecture: distributed cache cluster, cache-aside pattern, three-region replication, estimated infrastructure cost $3600 per month, within the $4000 budget cap."
+    }
+  ],
+  "annotations": {
+    "required_facts": [
+      {
+        "fact_id": "f-throughput-requirement",
+        "statement": "The Inventory Lookup Service must sustain 500 requests/sec.",
+        "why_it_matters": "This is the primary non-functional requirement that rules out the single-node in-memory cache once multi-region replication is added, driving the final architecture choice.",
+        "components": [
+          {
+            "component_id": "c-throughput-500",
+            "evidence": [
+              {
+                "source_id": "req-1",
+                "byte_start": 76,
+                "byte_end": 92
+              },
+              {
+                "source_id": "meeting-2",
+                "byte_start": 163,
+                "byte_end": 179
+              }
+            ],
+            "canonical_value": {
+              "number": {
+                "normalized": "500",
+                "unit": "requests/sec"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "req-1"
+        ]
+      },
+      {
+        "fact_id": "f-latency-requirement",
+        "statement": "The service must keep p99 latency under 200ms.",
+        "why_it_matters": "Sets the tail-latency ceiling that the final benchmark estimate must be checked against; without it, the 165ms benchmark number has no threshold to be judged against.",
+        "components": [
+          {
+            "component_id": "c-latency-threshold-200",
+            "evidence": [
+              {
+                "source_id": "req-1",
+                "byte_start": 114,
+                "byte_end": 119
+              }
+            ],
+            "canonical_value": {
+              "number": {
+                "normalized": "200",
+                "unit": "ms"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "req-1"
+        ]
+      },
+      {
+        "fact_id": "f-budget-cap",
+        "statement": "Infrastructure budget for the service is capped at $4000 per month.",
+        "why_it_matters": "This is a hard financial constraint the chosen architecture must fit within, which is what makes the final $3600 per month estimate a meaningful pass rather than an arbitrary number.",
+        "components": [
+          {
+            "component_id": "c-budget-cap-4000",
+            "evidence": [
+              {
+                "source_id": "req-2",
+                "byte_start": 98,
+                "byte_end": 113
+              }
+            ],
+            "canonical_value": {
+              "number": {
+                "normalized": "4000",
+                "unit": "$"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "req-2"
+        ]
+      },
+      {
+        "fact_id": "f-compliance-deadline",
+        "statement": "Multi-region read replication is mandatory under the Data Residency Directive for any service launching after 2025-09-01.",
+        "why_it_matters": "This is the firm compliance deadline that makes the replication requirement non-negotiable, directly countering the proposal to drop it for cost savings.",
+        "components": [
+          {
+            "component_id": "c-compliance-deadline-date",
+            "evidence": [
+              {
+                "source_id": "email-2",
+                "byte_start": 170,
+                "byte_end": 180
+              },
+              {
+                "source_id": "risk-1",
+                "byte_start": 151,
+                "byte_end": 161
+              }
+            ],
+            "canonical_value": {
+              "date": {
+                "normalized": "2025-09-01"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "email-2",
+          "risk-1"
+        ]
+      },
+      {
+        "fact_id": "f-final-architecture-approved",
+        "statement": "The distributed cache cluster architecture (ADR-07) was formally approved on 2025-06-18.",
+        "why_it_matters": "The design went through an earlier reversed recommendation, so only the combination of the final decision content and its formal approval confirms this is the architecture that actually shipped, not another draft that might again be reconsidered.",
+        "components": [
+          {
+            "component_id": "c-final-decision-content",
+            "evidence": [
+              {
+                "source_id": "adr-draft-2",
+                "byte_start": 107,
+                "byte_end": 181
+              }
+            ],
+            "canonical_value": {
+              "text": {
+                "normalized": "distributed cache cluster"
+              }
+            },
+            "required_qualifiers": []
+          },
+          {
+            "component_id": "c-final-decision-approved",
+            "evidence": [
+              {
+                "source_id": "adr-final",
+                "byte_start": 37,
+                "byte_end": 56
+              }
+            ],
+            "canonical_value": {
+              "date": {
+                "normalized": "2025-06-18"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "adr-draft-2",
+          "adr-final"
+        ]
+      },
+      {
+        "fact_id": "f-benchmark-latency-actual",
+        "statement": "Benchmark estimates for the distributed cache cluster show p99 latency of 165ms at 500 requests/sec.",
+        "why_it_matters": "Confirms the final architecture actually meets the 200ms latency requirement with margin, closing the loop between the requirement and the delivered design rather than leaving it an open question.",
+        "components": [
+          {
+            "component_id": "c-benchmark-latency-165",
+            "evidence": [
+              {
+                "source_id": "email-3",
+                "byte_start": 140,
+                "byte_end": 145
+              }
+            ],
+            "canonical_value": {
+              "number": {
+                "normalized": "165",
+                "unit": "ms"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "email-3"
+        ]
+      },
+      {
+        "fact_id": "f-single-node-cache-insufficient",
+        "statement": "Load testing showed the single-node in-memory cache could not sustain 500 requests/sec once multi-region replication was added, so the team reversed its initial recommendation.",
+        "why_it_matters": "Explains why the initially simpler, cheaper option was abandoned; without this, a reader might wrongly resurrect the single-node recommendation as a valid cost-saving alternative.",
+        "components": [
+          {
+            "component_id": "c-single-node-cache-fails-throughput",
+            "evidence": [
+              {
+                "source_id": "meeting-2",
+                "byte_start": 116,
+                "byte_end": 179
+              }
+            ],
+            "canonical_value": {
+              "text": {
+                "normalized": "cannot sustain"
+              }
+            },
+            "required_qualifiers": [
+              "not"
+            ]
+          }
+        ],
+        "expected_citation_source_ids": [
+          "meeting-2",
+          "adr-draft-1"
+        ]
+      },
+      {
+        "fact_id": "f-requirement-reconfirmed",
+        "statement": "At the 2025-06-16 design review, the Data Residency Directive replication requirement was reconfirmed and the cost-cutting proposal to drop it was declined.",
+        "why_it_matters": "Documents how the disagreement over the requirement was actually resolved by the review process, which matters for anyone trying to understand why the final architecture still includes three-region replication despite the earlier proposal to simplify it.",
+        "components": [
+          {
+            "component_id": "c-requirement-reconfirmed-date",
+            "evidence": [
+              {
+                "source_id": "meeting-3",
+                "byte_start": 29,
+                "byte_end": 39
+              }
+            ],
+            "canonical_value": {
+              "date": {
+                "normalized": "2025-06-16"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "meeting-3"
+        ]
+      },
+      {
+        "fact_id": "f-final-infra-cost",
+        "statement": "The approved architecture's estimated infrastructure cost is $3600 per month, within the $4000 budget cap.",
+        "why_it_matters": "Shows the final architecture actually satisfies the hard budget constraint rather than merely being technically superior, which is necessary to judge the decision as fully compliant with all stated requirements.",
+        "components": [
+          {
+            "component_id": "c-final-cost-3600",
+            "evidence": [
+              {
+                "source_id": "adr-final",
+                "byte_start": 227,
+                "byte_end": 242
+              }
+            ],
+            "canonical_value": {
+              "number": {
+                "normalized": "3600",
+                "unit": "$"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "adr-final"
+        ]
+      },
+      {
+        "fact_id": "f-risk-rating",
+        "statement": "Risk RISK-22 (missing the multi-region deployment deadline) is rated likelihood medium and impact high.",
+        "why_it_matters": "Both the likelihood and impact ratings are needed together to judge the overall severity of the compliance risk; keeping only one axis would misrepresent how the team actually prioritized it.",
+        "components": [
+          {
+            "component_id": "c-risk-22-likelihood-medium",
+            "evidence": [
+              {
+                "source_id": "risk-1",
+                "byte_start": 29,
+                "byte_end": 46
+              }
+            ],
+            "canonical_value": {
+              "text": {
+                "normalized": "medium"
+              }
+            },
+            "required_qualifiers": []
+          },
+          {
+            "component_id": "c-risk-22-impact-high",
+            "evidence": [
+              {
+                "source_id": "risk-1",
+                "byte_start": 48,
+                "byte_end": 59
+              }
+            ],
+            "canonical_value": {
+              "text": {
+                "normalized": "high"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "risk-1"
+        ]
+      }
+    ],
+    "distractor_source_ids": [
+      "budget-note-1",
+      "meeting-4"
+    ],
+    "contradiction_groups": [
+      {
+        "group_id": "g-replication-requirement-dispute",
+        "members": [
+          {
+            "source_id": "email-1",
+            "byte_start": 56,
+            "byte_end": 127
+          },
+          {
+            "source_id": "email-2",
+            "byte_start": 55,
+            "byte_end": 180
+          }
+        ]
+      }
+    ]
+  },
+  "content_digest": "sha256:bcb4b6085fb7bfd90dbc9b5bcd0d46ff3683e29f15d022688ef3883c1310cb9f"
+}
