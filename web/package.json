@@ -1,0 +1,37 @@
+{
+  "name": "limen-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Static Vite + TypeScript UI for Limen: a deterministic lab for comparing context-selection strategies under fixed token budgets, running entirely offline against the limen-wasm engine.",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "scripts": {
+    "build:wasm": "wasm-pack build ../crates/limen-wasm --target web --out-dir \"$(pwd)/src/wasm/pkg\" --no-opt",
+    "predev": "npm run build:wasm",
+    "dev": "vite",
+    "prebuild": "npm run build:wasm",
+    "build": "npm run typecheck && vite build",
+    "preview": "vite preview",
+    "pretypecheck": "npm run build:wasm",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck:e2e": "tsc -p e2e/tsconfig.json --noEmit",
+    "pretest": "npm run build:wasm",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:install": "playwright install chromium",
+    "lint": "biome check .",
+    "format": "biome format --write ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.8",
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^26.4.0",
+    "jsdom": "^30.0.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.1",
+    "vitest": "^4.1.10"
+  }
+}
