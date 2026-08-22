@@ -1,0 +1,677 @@
+[
+  {
+    "filename": "incident-investigation__full-input-truncation@1__zero.json",
+    "requested_tokens": 0,
+    "result_digest": "sha256:d11e651eeb954819612efd26dd88406a4a3d80aefb43c6d707ae55ff152f1c79",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "full-input-truncation@1",
+    "tier_name": "zero",
+    "used_tokens": 0
+  },
+  {
+    "filename": "incident-investigation__recency@1__zero.json",
+    "requested_tokens": 0,
+    "result_digest": "sha256:5f873f9712fcf5bd537a66ee72e7c63f724f305d40298eb5e69797002493e77b",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "recency@1",
+    "tier_name": "zero",
+    "used_tokens": 0
+  },
+  {
+    "filename": "incident-investigation__structured-extraction@1__zero.json",
+    "requested_tokens": 0,
+    "result_digest": "sha256:19f201c8352ea912e26463fc8671f37c9879d9e2ca14e8c5378b5e5ed95b0fef",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "structured-extraction@1",
+    "tier_name": "zero",
+    "used_tokens": 0
+  },
+  {
+    "filename": "incident-investigation__hierarchical-summary@1__zero.json",
+    "requested_tokens": 0,
+    "result_digest": "sha256:0137ebe93d899fae06b74c3ee8ffa516a5f6c85fd95cca8b93b21de7b47ed578",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "hierarchical-summary@1",
+    "tier_name": "zero",
+    "used_tokens": 0
+  },
+  {
+    "filename": "incident-investigation__retrieval-ranking@1__zero.json",
+    "requested_tokens": 0,
+    "result_digest": "sha256:a84276aea5c139d401228a3070b187bd6193d8e116788d379e12c3ceb4f3a5c3",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "retrieval-ranking@1",
+    "tier_name": "zero",
+    "used_tokens": 0
+  },
+  {
+    "filename": "incident-investigation__full-input-truncation@1__tight.json",
+    "requested_tokens": 149,
+    "result_digest": "sha256:9bf8770c2995be37bca7bef1525673fab94b837e980efa835dfd256adae41e26",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "full-input-truncation@1",
+    "tier_name": "tight",
+    "used_tokens": 149
+  },
+  {
+    "filename": "incident-investigation__recency@1__tight.json",
+    "requested_tokens": 149,
+    "result_digest": "sha256:694b484b3d576f030a1a9666705c87551b90ef022b55bdf949f2a276ed36ee80",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "recency@1",
+    "tier_name": "tight",
+    "used_tokens": 149
+  },
+  {
+    "filename": "incident-investigation__structured-extraction@1__tight.json",
+    "requested_tokens": 149,
+    "result_digest": "sha256:2ca9de9fce59c8562ed4be279549fc08020bfe74bf8c152997974f456c3207c0",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "structured-extraction@1",
+    "tier_name": "tight",
+    "used_tokens": 137
+  },
+  {
+    "filename": "incident-investigation__hierarchical-summary@1__tight.json",
+    "requested_tokens": 149,
+    "result_digest": "sha256:82a684b3cb308e296309e52fb847837783e6865cca7ec7513159a9ce21b4d304",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "hierarchical-summary@1",
+    "tier_name": "tight",
+    "used_tokens": 129
+  },
+  {
+    "filename": "incident-investigation__retrieval-ranking@1__tight.json",
+    "requested_tokens": 149,
+    "result_digest": "sha256:929f9cdb6abd7149d9d909d65546c11195459be5a14f8652df976e90323c2c77",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "retrieval-ranking@1",
+    "tier_name": "tight",
+    "used_tokens": 141
+  },
+  {
+    "filename": "incident-investigation__full-input-truncation@1__exact_boundary.json",
+    "requested_tokens": 263,
+    "result_digest": "sha256:8f23dbfeb0c61e4f88ed6af801bb8712b1a0330503d3b4c5d19a0613b70b84a2",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "full-input-truncation@1",
+    "tier_name": "exact_boundary",
+    "used_tokens": 263
+  },
+  {
+    "filename": "incident-investigation__recency@1__exact_boundary.json",
+    "requested_tokens": 263,
+    "result_digest": "sha256:577cb7d81df0b0cc19a0ccc3a5fde8222a6d3262ba0f94e74f4775fb9fb1574f",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "recency@1",
+    "tier_name": "exact_boundary",
+    "used_tokens": 263
+  },
+  {
+    "filename": "incident-investigation__structured-extraction@1__exact_boundary.json",
+    "requested_tokens": 263,
+    "result_digest": "sha256:320ddcd00f081618ddb08a57f865959cc274b920977a1c6c4f9bf777925fef11",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "structured-extraction@1",
+    "tier_name": "exact_boundary",
+    "used_tokens": 256
+  },
+  {
+    "filename": "incident-investigation__hierarchical-summary@1__exact_boundary.json",
+    "requested_tokens": 263,
+    "result_digest": "sha256:b627bc265dc90a5c63b1f3ad5ae14f646f976966406288f5d15112b051fff82d",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "hierarchical-summary@1",
+    "tier_name": "exact_boundary",
+    "used_tokens": 228
+  },
+  {
+    "filename": "incident-investigation__retrieval-ranking@1__exact_boundary.json",
+    "requested_tokens": 263,
+    "result_digest": "sha256:c34490fd6c614113c0e38745df6262997ffff63ba11fb159fca9d6914b948002",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "retrieval-ranking@1",
+    "tier_name": "exact_boundary",
+    "used_tokens": 245
+  },
+  {
+    "filename": "incident-investigation__full-input-truncation@1__representative.json",
+    "requested_tokens": 298,
+    "result_digest": "sha256:9e37ef66392f72bc1172161b6e9cf438d0ce7bd41a553ae0dba69df7cd86bd9c",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "full-input-truncation@1",
+    "tier_name": "representative",
+    "used_tokens": 298
+  },
+  {
+    "filename": "incident-investigation__recency@1__representative.json",
+    "requested_tokens": 298,
+    "result_digest": "sha256:a510142b42a8978a08d69a8c4bd996fca2858ba4feb71ce7862b1b150156fc97",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "recency@1",
+    "tier_name": "representative",
+    "used_tokens": 298
+  },
+  {
+    "filename": "incident-investigation__structured-extraction@1__representative.json",
+    "requested_tokens": 298,
+    "result_digest": "sha256:679bb793041730011d207ab686355b81819120818fb0c85ad9bdc0392d87c9cf",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "structured-extraction@1",
+    "tier_name": "representative",
+    "used_tokens": 276
+  },
+  {
+    "filename": "incident-investigation__hierarchical-summary@1__representative.json",
+    "requested_tokens": 298,
+    "result_digest": "sha256:a46c43c3dbeffd4f2a203d7919ed934ee063dfa44a419523d6a20bfba9764ca0",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "hierarchical-summary@1",
+    "tier_name": "representative",
+    "used_tokens": 297
+  },
+  {
+    "filename": "incident-investigation__retrieval-ranking@1__representative.json",
+    "requested_tokens": 298,
+    "result_digest": "sha256:959573643c4d67d01769a6919e584a970c5315a2162000cbc04138f5d15de348",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "retrieval-ranking@1",
+    "tier_name": "representative",
+    "used_tokens": 297
+  },
+  {
+    "filename": "incident-investigation__full-input-truncation@1__ample.json",
+    "requested_tokens": 1596,
+    "result_digest": "sha256:87d43c02062e090af7593c58fa646f270c8be151f5e3aa6bb5a518a524a43c16",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "full-input-truncation@1",
+    "tier_name": "ample",
+    "used_tokens": 596
+  },
+  {
+    "filename": "incident-investigation__recency@1__ample.json",
+    "requested_tokens": 1596,
+    "result_digest": "sha256:f5035bd0e0ad174a44ea69a0cb2e891f3732fe7cd9e398f54ce01b09aa2537d5",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "recency@1",
+    "tier_name": "ample",
+    "used_tokens": 596
+  },
+  {
+    "filename": "incident-investigation__structured-extraction@1__ample.json",
+    "requested_tokens": 1596,
+    "result_digest": "sha256:463186d3e82ad5a4f31295b51d0c1489c44af59c115b6c388b95625c370f2772",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "structured-extraction@1",
+    "tier_name": "ample",
+    "used_tokens": 498
+  },
+  {
+    "filename": "incident-investigation__hierarchical-summary@1__ample.json",
+    "requested_tokens": 1596,
+    "result_digest": "sha256:388e2ddfe94cfc8855a5d8493ee035225ae7151ab7fcba47e6edb057b3649636",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "hierarchical-summary@1",
+    "tier_name": "ample",
+    "used_tokens": 572
+  },
+  {
+    "filename": "incident-investigation__retrieval-ranking@1__ample.json",
+    "requested_tokens": 1596,
+    "result_digest": "sha256:f3bd7f3aed322ace27a6f8b590e5b83d9a931a83ea728931bc32576ca529d605",
+    "scenario_id": "incident-investigation",
+    "strategy_id": "retrieval-ranking@1",
+    "tier_name": "ample",
+    "used_tokens": 596
+  },
+  {
+    "filename": "product-comparison__full-input-truncation@1__zero.json",
+    "requested_tokens": 0,
+    "result_digest": "sha256:c9bd673bbd595198ca671abb1fb9b0698f50b96854404cd7bcf22d117ff4c530",
+    "scenario_id": "product-comparison",
+    "strategy_id": "full-input-truncation@1",
+    "tier_name": "zero",
+    "used_tokens": 0
+  },
+  {
+    "filename": "product-comparison__recency@1__zero.json",
+    "requested_tokens": 0,
+    "result_digest": "sha256:de082a0643406a0b05a0524f1a8a91670c893e8889dcc72f5ee5f0ecd88e849c",
+    "scenario_id": "product-comparison",
+    "strategy_id": "recency@1",
+    "tier_name": "zero",
+    "used_tokens": 0
+  },
+  {
+    "filename": "product-comparison__structured-extraction@1__zero.json",
+    "requested_tokens": 0,
+    "result_digest": "sha256:e48dfd2c54adec8fdfebf2d5fddcfb57dcc0e7d94495373e9447205bef8dd27e",
+    "scenario_id": "product-comparison",
+    "strategy_id": "structured-extraction@1",
+    "tier_name": "zero",
+    "used_tokens": 0
+  },
+  {
+    "filename": "product-comparison__hierarchical-summary@1__zero.json",
+    "requested_tokens": 0,
+    "result_digest": "sha256:6904649a312e1c01e7c31dae327f65851ae440ed86760040460e3ddb49dd0c7b",
+    "scenario_id": "product-comparison",
+    "strategy_id": "hierarchical-summary@1",
+    "tier_name": "zero",
+    "used_tokens": 0
+  },
+  {
+    "filename": "product-comparison__retrieval-ranking@1__zero.json",
+    "requested_tokens": 0,
+    "result_digest": "sha256:1cc547a6e887de3873d3121ded82fdb908a9d478a548cec3cb7b69a741516eb4",
+    "scenario_id": "product-comparison",
+    "strategy_id": "retrieval-ranking@1",
+    "tier_name": "zero",
+    "used_tokens": 0
+  },
+  {
+    "filename": "product-comparison__full-input-truncation@1__tight.json",
+    "requested_tokens": 123,
+    "result_digest": "sha256:3e7da48be9b5641c729d98eb9b6d8de62eeea02f6b2b31847113f67fa0448cee",
+    "scenario_id": "product-comparison",
+    "strategy_id": "full-input-truncation@1",
+    "tier_name": "tight",
+    "used_tokens": 123
+  },
+  {
+    "filename": "product-comparison__recency@1__tight.json",
+    "requested_tokens": 123,
+    "result_digest": "sha256:5c5cdc77fb5257b58d149e0acf39b53e69f267efadc0e343bcac60fc707d32f2",
+    "scenario_id": "product-comparison",
+    "strategy_id": "recency@1",
+    "tier_name": "tight",
+    "used_tokens": 123
+  },
+  {
+    "filename": "product-comparison__structured-extraction@1__tight.json",
+    "requested_tokens": 123,
+    "result_digest": "sha256:84c668fc1416a0c1de8714dbe96f695684ec1f1f50b6d82c4d7d5fd561ed3ff2",
+    "scenario_id": "product-comparison",
+    "strategy_id": "structured-extraction@1",
+    "tier_name": "tight",
+    "used_tokens": 117
+  },
+  {
+    "filename": "product-comparison__hierarchical-summary@1__tight.json",
+    "requested_tokens": 123,
+    "result_digest": "sha256:e33ef4c31fcd0e60dd389d02fbac3bdb76cc944fc5342b0e4e606bccdee9802a",
+    "scenario_id": "product-comparison",
+    "strategy_id": "hierarchical-summary@1",
+    "tier_name": "tight",
+    "used_tokens": 117
+  },
+  {
+    "filename": "product-comparison__retrieval-ranking@1__tight.json",
+    "requested_tokens": 123,
+    "result_digest": "sha256:45996ee7eccb9fb888c9c1964c8de2aec68832ae196f892a4eb80511ba1c7ab6",
+    "scenario_id": "product-comparison",
+    "strategy_id": "retrieval-ranking@1",
+    "tier_name": "tight",
+    "used_tokens": 122
+  },
+  {
+    "filename": "product-comparison__full-input-truncation@1__exact_boundary.json",
+    "requested_tokens": 235,
+    "result_digest": "sha256:b74d69d07bb2f7a50baa58466786d6f907c0daf6e3450b5399a7540e9e034583",
+    "scenario_id": "product-comparison",
+    "strategy_id": "full-input-truncation@1",
+    "tier_name": "exact_boundary",
+    "used_tokens": 235
+  },
+  {
+    "filename": "product-comparison__recency@1__exact_boundary.json",
+    "requested_tokens": 235,
+    "result_digest": "sha256:a83197b525ad0d52c925bdf86e348afbd0d80823cff76c01e88f8bfe05b8cbef",
+    "scenario_id": "product-comparison",
+    "strategy_id": "recency@1",
+    "tier_name": "exact_boundary",
+    "used_tokens": 235
+  },
+  {
+    "filename": "product-comparison__structured-extraction@1__exact_boundary.json",
+    "requested_tokens": 235,
+    "result_digest": "sha256:176744b4a51b9d213f4585865e54e7fcfb702dbb2d5ae502c96082a423523dff",
+    "scenario_id": "product-comparison",
+    "strategy_id": "structured-extraction@1",
+    "tier_name": "exact_boundary",
+    "used_tokens": 222
+  },
+  {
+    "filename": "product-comparison__hierarchical-summary@1__exact_boundary.json",
+    "requested_tokens": 235,
+    "result_digest": "sha256:898fc7055356b68bce5d01a787191d37195db6c4faf95c3a0cdf7688e2145886",
+    "scenario_id": "product-comparison",
+    "strategy_id": "hierarchical-summary@1",
+    "tier_name": "exact_boundary",
+    "used_tokens": 227
+  },
+  {
+    "filename": "product-comparison__retrieval-ranking@1__exact_boundary.json",
+    "requested_tokens": 235,
+    "result_digest": "sha256:1d941a2d4c4a5d78888c11d4572c64d4a84d08110df013930b24b9b448c946e5",
+    "scenario_id": "product-comparison",
+    "strategy_id": "retrieval-ranking@1",
+    "tier_name": "exact_boundary",
+    "used_tokens": 233
+  },
+  {
+    "filename": "product-comparison__full-input-truncation@1__representative.json",
+    "requested_tokens": 246,
+    "result_digest": "sha256:c723d6f90c87746106e03c7c8b506fede75d77f9c6ab61d32f8cb1a7ed0a8f11",
+    "scenario_id": "product-comparison",
+    "strategy_id": "full-input-truncation@1",
+    "tier_name": "representative",
+    "used_tokens": 246
+  },
+  {
+    "filename": "product-comparison__recency@1__representative.json",
+    "requested_tokens": 246,
+    "result_digest": "sha256:e5d449e2dd67120fe60b7eeaf667db745db5375c2c586b157072525f33315455",
+    "scenario_id": "product-comparison",
+    "strategy_id": "recency@1",
+    "tier_name": "representative",
+    "used_tokens": 246
+  },
+  {
+    "filename": "product-comparison__structured-extraction@1__representative.json",
+    "requested_tokens": 246,
+    "result_digest": "sha256:cf0960f1e58c96fc050c566561aa39fc2d1a41a25dce39cdb83c2ff898b3c29a",
+    "scenario_id": "product-comparison",
+    "strategy_id": "structured-extraction@1",
+    "tier_name": "representative",
+    "used_tokens": 222
+  },
+  {
+    "filename": "product-comparison__hierarchical-summary@1__representative.json",
+    "requested_tokens": 246,
+    "result_digest": "sha256:9248bc230bcdbb456a6a812a236015b686faf4791acf17f86a459f18639feb0b",
+    "scenario_id": "product-comparison",
+    "strategy_id": "hierarchical-summary@1",
+    "tier_name": "representative",
+    "used_tokens": 227
+  },
+  {
+    "filename": "product-comparison__retrieval-ranking@1__representative.json",
+    "requested_tokens": 246,
+    "result_digest": "sha256:a27e81c1e911704424f0a1f79fd956f1536e1dbeac53907cc9b9253b316e2f69",
+    "scenario_id": "product-comparison",
+    "strategy_id": "retrieval-ranking@1",
+    "tier_name": "representative",
+    "used_tokens": 233
+  },
+  {
+    "filename": "product-comparison__full-input-truncation@1__ample.json",
+    "requested_tokens": 1493,
+    "result_digest": "sha256:c171a7ab7a52eba046f6fe5ef5a4175c224b14e537c171460c2bd9eee2badba7",
+    "scenario_id": "product-comparison",
+    "strategy_id": "full-input-truncation@1",
+    "tier_name": "ample",
+    "used_tokens": 493
+  },
+  {
+    "filename": "product-comparison__recency@1__ample.json",
+    "requested_tokens": 1493,
+    "result_digest": "sha256:c51af75d2334215f58ad86decf712a1e7683ee725f309f4c7e6daba8473db942",
+    "scenario_id": "product-comparison",
+    "strategy_id": "recency@1",
+    "tier_name": "ample",
+    "used_tokens": 493
+  },
+  {
+    "filename": "product-comparison__structured-extraction@1__ample.json",
+    "requested_tokens": 1493,
+    "result_digest": "sha256:d838f4367089d256f93ce7c645704de929a84f5adba318513b02f93c403b4f67",
+    "scenario_id": "product-comparison",
+    "strategy_id": "structured-extraction@1",
+    "tier_name": "ample",
+    "used_tokens": 317
+  },
+  {
+    "filename": "product-comparison__hierarchical-summary@1__ample.json",
+    "requested_tokens": 1493,
+    "result_digest": "sha256:18da1a4a11972ba7b890b47becaf26c89aa06de4217b2866c296eaede952928f",
+    "scenario_id": "product-comparison",
+    "strategy_id": "hierarchical-summary@1",
+    "tier_name": "ample",
+    "used_tokens": 468
+  },
+  {
+    "filename": "product-comparison__retrieval-ranking@1__ample.json",
+    "requested_tokens": 1493,
+    "result_digest": "sha256:b548fa4fd45965684a56f353d544be84f5cc38086a3aa0e9fb88e2607cf80e5c",
+    "scenario_id": "product-comparison",
+    "strategy_id": "retrieval-ranking@1",
+    "tier_name": "ample",
+    "used_tokens": 493
+  },
+  {
+    "filename": "requirements-architecture-review__full-input-truncation@1__zero.json",
+    "requested_tokens": 0,
+    "result_digest": "sha256:22a0403e2502da99f3145452880c5060cb129d3341a0bf15b7f64b1c83359a85",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "full-input-truncation@1",
+    "tier_name": "zero",
+    "used_tokens": 0
+  },
+  {
+    "filename": "requirements-architecture-review__recency@1__zero.json",
+    "requested_tokens": 0,
+    "result_digest": "sha256:e039d784665527d34ffd90708b6da730934f1b22d144ef29876ff850ab0be854",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "recency@1",
+    "tier_name": "zero",
+    "used_tokens": 0
+  },
+  {
+    "filename": "requirements-architecture-review__structured-extraction@1__zero.json",
+    "requested_tokens": 0,
+    "result_digest": "sha256:9ba541f98620cf5eb331d7a36b3157c8eae81b1bea301ba420e9d1e988288553",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "structured-extraction@1",
+    "tier_name": "zero",
+    "used_tokens": 0
+  },
+  {
+    "filename": "requirements-architecture-review__hierarchical-summary@1__zero.json",
+    "requested_tokens": 0,
+    "result_digest": "sha256:d1def364874ae781fb425ad12de138e6bee383c0abdc35045170e951903df389",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "hierarchical-summary@1",
+    "tier_name": "zero",
+    "used_tokens": 0
+  },
+  {
+    "filename": "requirements-architecture-review__retrieval-ranking@1__zero.json",
+    "requested_tokens": 0,
+    "result_digest": "sha256:61e4320ff2524edec5923caa2b617eacf367a0042021e5b6b1f498ecc44f21c6",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "retrieval-ranking@1",
+    "tier_name": "zero",
+    "used_tokens": 0
+  },
+  {
+    "filename": "requirements-architecture-review__full-input-truncation@1__tight.json",
+    "requested_tokens": 163,
+    "result_digest": "sha256:29b118b58f1044125e11397c2e032538c2a4bbc38b1e09331927fa5b829f8a36",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "full-input-truncation@1",
+    "tier_name": "tight",
+    "used_tokens": 163
+  },
+  {
+    "filename": "requirements-architecture-review__recency@1__tight.json",
+    "requested_tokens": 163,
+    "result_digest": "sha256:2b48995bcc9e461fb007453973f2ffd7e4cdc07472bb3b383de8a0aa009f4695",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "recency@1",
+    "tier_name": "tight",
+    "used_tokens": 163
+  },
+  {
+    "filename": "requirements-architecture-review__structured-extraction@1__tight.json",
+    "requested_tokens": 163,
+    "result_digest": "sha256:ca86fc7274c7567744d953a1ec120d5b2e760f86d69b2a1eb5face335c1d3af3",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "structured-extraction@1",
+    "tier_name": "tight",
+    "used_tokens": 152
+  },
+  {
+    "filename": "requirements-architecture-review__hierarchical-summary@1__tight.json",
+    "requested_tokens": 163,
+    "result_digest": "sha256:dfb281085646fd15f798658860a048c347eb447162a8ddb078ba581944e98645",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "hierarchical-summary@1",
+    "tier_name": "tight",
+    "used_tokens": 155
+  },
+  {
+    "filename": "requirements-architecture-review__retrieval-ranking@1__tight.json",
+    "requested_tokens": 163,
+    "result_digest": "sha256:5f6485e207cbc41b02af9a8d4f6ffd7d10527cc9dcd84fef877a7ce727b8601a",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "retrieval-ranking@1",
+    "tier_name": "tight",
+    "used_tokens": 155
+  },
+  {
+    "filename": "requirements-architecture-review__full-input-truncation@1__exact_boundary.json",
+    "requested_tokens": 308,
+    "result_digest": "sha256:9fb41dc5016fca5dc331ed640acc92448da41dc81ec37fcbb5277d5fe0349eaa",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "full-input-truncation@1",
+    "tier_name": "exact_boundary",
+    "used_tokens": 308
+  },
+  {
+    "filename": "requirements-architecture-review__recency@1__exact_boundary.json",
+    "requested_tokens": 308,
+    "result_digest": "sha256:d0fb88519b212815eb1cffc27181e8709698e1360b4c0c210d9b6571ccb7e51b",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "recency@1",
+    "tier_name": "exact_boundary",
+    "used_tokens": 308
+  },
+  {
+    "filename": "requirements-architecture-review__structured-extraction@1__exact_boundary.json",
+    "requested_tokens": 308,
+    "result_digest": "sha256:027d2b85c55fce4fcd981051313bab33bf0472525ba87e2e332f81d795ea3e0b",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "structured-extraction@1",
+    "tier_name": "exact_boundary",
+    "used_tokens": 293
+  },
+  {
+    "filename": "requirements-architecture-review__hierarchical-summary@1__exact_boundary.json",
+    "requested_tokens": 308,
+    "result_digest": "sha256:78b62bbf76ab3ad1e0307969fefc53e5a10a5d5b0639d5857ee641769e697e62",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "hierarchical-summary@1",
+    "tier_name": "exact_boundary",
+    "used_tokens": 290
+  },
+  {
+    "filename": "requirements-architecture-review__retrieval-ranking@1__exact_boundary.json",
+    "requested_tokens": 308,
+    "result_digest": "sha256:3e8a4e62be6bd7aec30ca1aba0bf10370e4fb038bbcd193a7b27427a845c33e3",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "retrieval-ranking@1",
+    "tier_name": "exact_boundary",
+    "used_tokens": 286
+  },
+  {
+    "filename": "requirements-architecture-review__full-input-truncation@1__representative.json",
+    "requested_tokens": 326,
+    "result_digest": "sha256:0eac7a4f60c0dd54cce5a8f8a8586ee659bec6130ce54664d2fda4b4647189f0",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "full-input-truncation@1",
+    "tier_name": "representative",
+    "used_tokens": 326
+  },
+  {
+    "filename": "requirements-architecture-review__recency@1__representative.json",
+    "requested_tokens": 326,
+    "result_digest": "sha256:37f534fc30a0bee203266a405ea4412847c9b0099d222b2e209d9947ebf50428",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "recency@1",
+    "tier_name": "representative",
+    "used_tokens": 326
+  },
+  {
+    "filename": "requirements-architecture-review__structured-extraction@1__representative.json",
+    "requested_tokens": 326,
+    "result_digest": "sha256:bc84c208a5e3fcf00136e2f5cdd8ed162f15fe544cd77662983dc171d2267158",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "structured-extraction@1",
+    "tier_name": "representative",
+    "used_tokens": 325
+  },
+  {
+    "filename": "requirements-architecture-review__hierarchical-summary@1__representative.json",
+    "requested_tokens": 326,
+    "result_digest": "sha256:9fb62d74648041652e800e4abed46875ba4ece96cb2ab1d4c926a074376d950f",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "hierarchical-summary@1",
+    "tier_name": "representative",
+    "used_tokens": 312
+  },
+  {
+    "filename": "requirements-architecture-review__retrieval-ranking@1__representative.json",
+    "requested_tokens": 326,
+    "result_digest": "sha256:237cca9a82438f7674b9d372f32b88e5c8a519a021d8703f9c176cf15cb25e4b",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "retrieval-ranking@1",
+    "tier_name": "representative",
+    "used_tokens": 325
+  },
+  {
+    "filename": "requirements-architecture-review__full-input-truncation@1__ample.json",
+    "requested_tokens": 1653,
+    "result_digest": "sha256:d1a5a0ad81ca616d0d328b3dc6bc2052cb460dff24ca464d5fc0dcc62a4b2099",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "full-input-truncation@1",
+    "tier_name": "ample",
+    "used_tokens": 653
+  },
+  {
+    "filename": "requirements-architecture-review__recency@1__ample.json",
+    "requested_tokens": 1653,
+    "result_digest": "sha256:7f93df821463c2963d108b52cab24a554b80b5c2e65067244feb8bce53f51582",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "recency@1",
+    "tier_name": "ample",
+    "used_tokens": 653
+  },
+  {
+    "filename": "requirements-architecture-review__structured-extraction@1__ample.json",
+    "requested_tokens": 1653,
+    "result_digest": "sha256:a400a4214a20be7f687264c893b778ee9e074d25955db2c9021b09d37b0459ac",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "structured-extraction@1",
+    "tier_name": "ample",
+    "used_tokens": 483
+  },
+  {
+    "filename": "requirements-architecture-review__hierarchical-summary@1__ample.json",
+    "requested_tokens": 1653,
+    "result_digest": "sha256:d7e801cf7314ca5f126b864c0c90325e4a8ebd2df89c8d0f80c4f35ef1d92bf6",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "hierarchical-summary@1",
+    "tier_name": "ample",
+    "used_tokens": 467
+  },
+  {
+    "filename": "requirements-architecture-review__retrieval-ranking@1__ample.json",
+    "requested_tokens": 1653,
+    "result_digest": "sha256:c7970fc2d42384f12a1e74a7e4bfea6b1640b68417b7937ebc54037972cbfc95",
+    "scenario_id": "requirements-architecture-review",
+    "strategy_id": "retrieval-ranking@1",
+    "tier_name": "ample",
+    "used_tokens": 653
+  }
+]
