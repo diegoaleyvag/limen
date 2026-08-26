@@ -1,0 +1,18 @@
+{
+ "schemaVersion": "1.0.0",
+ "collection": "five-decisions",
+ "id": "limen",
+ "title": "Limen",
+ "decision": "What belongs in context?",
+ "learningOrigin": "2026-05",
+ "buildStarted": "2026-08-13",
+ "status": "building",
+ "summary": "A deterministic lab for comparing context-selection strategies under fixed budgets.",
+ "capabilities": ["context budgeting", "strategy comparison", "traceable selection"],
+ "evidence": [],
+ "links": {
+ "repository": null,
+ "demo": null,
+ "methodology": null
+ }
+}
