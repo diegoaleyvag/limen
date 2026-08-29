@@ -89,7 +89,7 @@ ensure_rust() {
   mkdir -p "$TOOL_ROOT/rustup-bin" "$RUSTUP_HOME" "$CARGO_HOME"
 
   if [[ ! -x "$RUSTUP_BIN" ]]; then
-    RUSTUP_HOME="$RUSTUP_HOME" CARGO_HOME="$CARGO_HOME" "$rustup_installer" \
+    env RUSTUP_HOME="$RUSTUP_HOME" CARGO_HOME="$CARGO_HOME" "$rustup_installer" \
       -y \
       --default-toolchain none \
       --profile minimal \
