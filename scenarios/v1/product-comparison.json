@@ -1,0 +1,503 @@
+{
+  "schema_version": "1.0.0",
+  "scenario_id": "product-comparison",
+  "scenario_version": "1.0.0",
+  "title": "API Gateway Product Comparison: Corsair vs Halcyon",
+  "task_query": "Which product should we choose given our requirements, and what are the tradeoffs?",
+  "items": [
+    {
+      "source_id": "spec-corsair",
+      "order_index": 0,
+      "section_label": "spec_sheet",
+      "text": "Corsair Gateway by Wrenfield Software. Pricing: $18 per seat per month, 10 seat minimum. Uptime SLA: 99.95 percent. Deployment: self-hosted or managed cloud."
+    },
+    {
+      "source_id": "spec-halcyon",
+      "order_index": 1,
+      "section_label": "spec_sheet",
+      "text": "Halcyon Gateway by Briarcliff Systems. Pricing: $24 per seat per month, 5 seat minimum. Uptime SLA: 99.9 percent. Deployment: managed cloud only."
+    },
+    {
+      "source_id": "spec-corsair-legacy",
+      "order_index": 2,
+      "section_label": "spec_sheet",
+      "text": "Corsair Gateway legacy notice: the original IP-allowlist-only access control module was discontinued in v3.0.0 and superseded by the policy-based access control module."
+    },
+    {
+      "source_id": "market-corsair",
+      "order_index": 3,
+      "section_label": "marketing_copy",
+      "text": "Corsair Gateway marketing page: 'Adaptive rate limiting ships today, fully available in the current release.'"
+    },
+    {
+      "source_id": "changelog-corsair",
+      "order_index": 4,
+      "section_label": "changelog_entry",
+      "text": "Corsair Gateway changelog v3.4.0, 2025-04-18: adaptive rate limiting is in closed beta, targeted for general availability in v3.6.0."
+    },
+    {
+      "source_id": "changelog-halcyon",
+      "order_index": 5,
+      "section_label": "changelog_entry",
+      "text": "Halcyon Gateway changelog v5.1.0, 2025-04-30: fixed an issue where the audit-log export could silently drop entries under high load."
+    },
+    {
+      "source_id": "bench-report",
+      "order_index": 6,
+      "section_label": "benchmark_report",
+      "text": "Synthetic gateway benchmark, 2025-05-04. Corsair Gateway sustained 12400 requests/sec at p99 latency of 38ms. Halcyon Gateway sustained 9800 requests/sec at p99 latency of 61ms. Both tested against the same 64-node cluster."
+    },
+    {
+      "source_id": "quote-halcyon-1",
+      "order_index": 7,
+      "section_label": "customer_quote",
+      "text": "Customer note from Meadowvale Retail: 'Halcyon's managed-cloud-only deployment meant we could not keep our EU data on-prem, which was a blocker for us.'"
+    },
+    {
+      "source_id": "eval-note-1",
+      "order_index": 8,
+      "section_label": "eval_note",
+      "text": "Internal evaluation note, 2025-05-06: our compliance requirement mandates on-premises deployment capability for the payments module; Halcyon Gateway does not offer self-hosted deployment."
+    },
+    {
+      "source_id": "eval-note-2",
+      "order_index": 9,
+      "section_label": "eval_note",
+      "text": "Internal evaluation note: at our expected load of 10000 requests/sec, Corsair Gateway's benchmarked 12400 requests/sec headroom looks safer than Halcyon's 9800 requests/sec, which is below our target."
+    },
+    {
+      "source_id": "market-halcyon",
+      "order_index": 10,
+      "section_label": "marketing_copy",
+      "text": "Halcyon Gateway marketing page: 'Best-in-class 99.99 percent uptime SLA across all plans.'"
+    },
+    {
+      "source_id": "quote-corsair-2",
+      "order_index": 11,
+      "section_label": "customer_quote",
+      "text": "Customer note from Basalt Freight: 'We pay $18 per seat with Corsair's 10 seat minimum, so our 12-engineer team costs $216 a month.'"
+    },
+    {
+      "source_id": "quote-corsair-1",
+      "order_index": 12,
+      "section_label": "customer_quote",
+      "text": "Customer note from Ferrow Logistics: 'Corsair's static rate limiting has been reliable for us for eight months.'"
+    },
+    {
+      "source_id": "eval-note-3",
+      "order_index": 13,
+      "section_label": "eval_note",
+      "text": "Internal evaluation note: we briefly considered a third product, Ironclad Gateway, but its vendor was unresponsive to our sales inquiries and it was dropped from consideration before benchmarking."
+    },
+    {
+      "source_id": "eval-note-4",
+      "order_index": 14,
+      "section_label": "eval_note",
+      "text": "Internal evaluation note, final recommendation: choose Corsair Gateway for the payments module due to on-premises support and throughput headroom; revisit Halcyon if the on-premises requirement is later dropped."
+    }
+  ],
+  "annotations": {
+    "required_facts": [
+      {
+        "fact_id": "f-corsair-pricing",
+        "statement": "Corsair Gateway costs $18 per seat per month with a 10 seat minimum.",
+        "why_it_matters": "Both the per-seat rate and the minimum seat count are required to compute the actual monthly cost for a team, which directly drives the budget comparison between the two products.",
+        "components": [
+          {
+            "component_id": "c-corsair-price-18",
+            "evidence": [
+              {
+                "source_id": "spec-corsair",
+                "byte_start": 48,
+                "byte_end": 70
+              },
+              {
+                "source_id": "quote-corsair-2",
+                "byte_start": 43,
+                "byte_end": 55
+              }
+            ],
+            "canonical_value": {
+              "number": {
+                "normalized": "18",
+                "unit": "per seat"
+              }
+            },
+            "required_qualifiers": [
+              "$"
+            ]
+          },
+          {
+            "component_id": "c-corsair-seat-min-10",
+            "evidence": [
+              {
+                "source_id": "spec-corsair",
+                "byte_start": 72,
+                "byte_end": 87
+              },
+              {
+                "source_id": "quote-corsair-2",
+                "byte_start": 71,
+                "byte_end": 86
+              }
+            ],
+            "canonical_value": {
+              "number": {
+                "normalized": "10",
+                "unit": "seat minimum"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "spec-corsair",
+          "quote-corsair-2"
+        ]
+      },
+      {
+        "fact_id": "f-halcyon-pricing",
+        "statement": "Halcyon Gateway costs $24 per seat per month with a 5 seat minimum.",
+        "why_it_matters": "Establishes Halcyon's higher per-seat rate and lower seat minimum, both of which factor into how its total cost compares to Corsair's for a given team size.",
+        "components": [
+          {
+            "component_id": "c-halcyon-price-24",
+            "evidence": [
+              {
+                "source_id": "spec-halcyon",
+                "byte_start": 48,
+                "byte_end": 70
+              }
+            ],
+            "canonical_value": {
+              "number": {
+                "normalized": "24",
+                "unit": "per seat"
+              }
+            },
+            "required_qualifiers": [
+              "$"
+            ]
+          },
+          {
+            "component_id": "c-halcyon-seat-min-5",
+            "evidence": [
+              {
+                "source_id": "spec-halcyon",
+                "byte_start": 72,
+                "byte_end": 86
+              }
+            ],
+            "canonical_value": {
+              "number": {
+                "normalized": "5",
+                "unit": "seat minimum"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "spec-halcyon"
+        ]
+      },
+      {
+        "fact_id": "f-benchmark-throughput",
+        "statement": "The benchmark measured Corsair Gateway at 12400 requests/sec and Halcyon Gateway at 9800 requests/sec under the same conditions.",
+        "why_it_matters": "The comparison is only meaningful with both numbers together; keeping just one product's throughput number loses the relative headroom analysis the evaluation note relies on.",
+        "components": [
+          {
+            "component_id": "c-corsair-throughput-12400",
+            "evidence": [
+              {
+                "source_id": "bench-report",
+                "byte_start": 67,
+                "byte_end": 85
+              },
+              {
+                "source_id": "eval-note-2",
+                "byte_start": 100,
+                "byte_end": 118
+              }
+            ],
+            "canonical_value": {
+              "number": {
+                "normalized": "12400",
+                "unit": "requests/sec"
+              }
+            },
+            "required_qualifiers": []
+          },
+          {
+            "component_id": "c-halcyon-throughput-9800",
+            "evidence": [
+              {
+                "source_id": "bench-report",
+                "byte_start": 136,
+                "byte_end": 153
+              },
+              {
+                "source_id": "eval-note-2",
+                "byte_start": 155,
+                "byte_end": 172
+              }
+            ],
+            "canonical_value": {
+              "number": {
+                "normalized": "9800",
+                "unit": "requests/sec"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "bench-report",
+          "eval-note-2"
+        ]
+      },
+      {
+        "fact_id": "f-corsair-p99-latency",
+        "statement": "Corsair Gateway's p99 latency in the benchmark was 38ms.",
+        "why_it_matters": "p99 latency reveals tail-end performance that average throughput numbers can hide, and 38ms is the number the team would actually experience under load.",
+        "components": [
+          {
+            "component_id": "c-corsair-latency-38",
+            "evidence": [
+              {
+                "source_id": "bench-report",
+                "byte_start": 104,
+                "byte_end": 108
+              }
+            ],
+            "canonical_value": {
+              "number": {
+                "normalized": "38",
+                "unit": "ms"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "bench-report"
+        ]
+      },
+      {
+        "fact_id": "f-halcyon-p99-latency",
+        "statement": "Halcyon Gateway's p99 latency in the benchmark was 61ms.",
+        "why_it_matters": "Shows Halcyon's tail latency is substantially higher than Corsair's, which matters for latency-sensitive checkout traffic even if average-case performance looks acceptable.",
+        "components": [
+          {
+            "component_id": "c-halcyon-latency-61",
+            "evidence": [
+              {
+                "source_id": "bench-report",
+                "byte_start": 172,
+                "byte_end": 176
+              }
+            ],
+            "canonical_value": {
+              "number": {
+                "normalized": "61",
+                "unit": "ms"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "bench-report"
+        ]
+      },
+      {
+        "fact_id": "f-halcyon-uptime-per-spec",
+        "statement": "Halcyon Gateway's spec sheet lists a 99.9 percent uptime SLA.",
+        "why_it_matters": "This is the contractually documented SLA figure, distinct from the higher figure the marketing page separately claims, and is the number that would actually govern a support contract.",
+        "components": [
+          {
+            "component_id": "c-halcyon-uptime-spec-99-9",
+            "evidence": [
+              {
+                "source_id": "spec-halcyon",
+                "byte_start": 100,
+                "byte_end": 112
+              }
+            ],
+            "canonical_value": {
+              "number": {
+                "normalized": "99.9",
+                "unit": "percent"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "spec-halcyon"
+        ]
+      },
+      {
+        "fact_id": "f-halcyon-no-onprem",
+        "statement": "Halcyon Gateway does not offer a self-hosted deployment option, which conflicts with the payments module's compliance requirement.",
+        "why_it_matters": "This is a hard disqualifying constraint for the payments use case, not merely a preference, so losing this fact could lead to recommending a product that cannot legally be used for that workload.",
+        "components": [
+          {
+            "component_id": "c-halcyon-no-self-hosted",
+            "evidence": [
+              {
+                "source_id": "eval-note-1",
+                "byte_start": 149,
+                "byte_end": 186
+              }
+            ],
+            "canonical_value": {
+              "text": {
+                "normalized": "self-hosted"
+              }
+            },
+            "required_qualifiers": [
+              "not"
+            ]
+          }
+        ],
+        "expected_citation_source_ids": [
+          "eval-note-1",
+          "quote-halcyon-1"
+        ]
+      },
+      {
+        "fact_id": "f-benchmark-date",
+        "statement": "The gateway benchmark was run on 2025-05-04.",
+        "why_it_matters": "Dates the performance numbers so a reader can judge whether they reflect the currently shipping versions of each product rather than stale results.",
+        "components": [
+          {
+            "component_id": "c-benchmark-date",
+            "evidence": [
+              {
+                "source_id": "bench-report",
+                "byte_start": 29,
+                "byte_end": 39
+              }
+            ],
+            "canonical_value": {
+              "date": {
+                "normalized": "2025-05-04"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "bench-report"
+        ]
+      },
+      {
+        "fact_id": "f-adaptive-rate-limiting-still-beta",
+        "statement": "As of the changelog entry dated 2025-04-18, Corsair Gateway's adaptive rate limiting is still in closed beta, not generally available.",
+        "why_it_matters": "Both the status and the date matter together: without the date, a reader cannot tell whether this beta status is still current or long superseded, which is exactly the ambiguity the marketing page's contradictory claim depends on.",
+        "components": [
+          {
+            "component_id": "c-adaptive-rate-limiting-beta-status",
+            "evidence": [
+              {
+                "source_id": "changelog-corsair",
+                "byte_start": 75,
+                "byte_end": 86
+              }
+            ],
+            "canonical_value": {
+              "text": {
+                "normalized": "closed beta"
+              }
+            },
+            "required_qualifiers": []
+          },
+          {
+            "component_id": "c-adaptive-rate-limiting-changelog-date",
+            "evidence": [
+              {
+                "source_id": "changelog-corsair",
+                "byte_start": 34,
+                "byte_end": 44
+              }
+            ],
+            "canonical_value": {
+              "date": {
+                "normalized": "2025-04-18"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "changelog-corsair",
+          "market-corsair"
+        ]
+      },
+      {
+        "fact_id": "f-compliance-requirement-date",
+        "statement": "The internal evaluation note recording the on-premises compliance requirement is dated 2025-05-06.",
+        "why_it_matters": "Establishes that the compliance constraint was documented after the benchmark and marketing claims were already known, showing it was evaluated with full information rather than being an earlier, possibly-outdated requirement.",
+        "components": [
+          {
+            "component_id": "c-eval-note-1-date",
+            "evidence": [
+              {
+                "source_id": "eval-note-1",
+                "byte_start": 26,
+                "byte_end": 36
+              }
+            ],
+            "canonical_value": {
+              "date": {
+                "normalized": "2025-05-06"
+              }
+            },
+            "required_qualifiers": []
+          }
+        ],
+        "expected_citation_source_ids": [
+          "eval-note-1"
+        ]
+      }
+    ],
+    "distractor_source_ids": [
+      "eval-note-3",
+      "spec-corsair-legacy"
+    ],
+    "contradiction_groups": [
+      {
+        "group_id": "g-adaptive-rate-limiting-availability",
+        "members": [
+          {
+            "source_id": "market-corsair",
+            "byte_start": 56,
+            "byte_end": 107
+          },
+          {
+            "source_id": "changelog-corsair",
+            "byte_start": 69,
+            "byte_end": 86
+          }
+        ]
+      },
+      {
+        "group_id": "g-halcyon-uptime-claim",
+        "members": [
+          {
+            "source_id": "spec-halcyon",
+            "byte_start": 100,
+            "byte_end": 112
+          },
+          {
+            "source_id": "market-halcyon",
+            "byte_start": 47,
+            "byte_end": 60
+          }
+        ]
+      }
+    ]
+  },
+  "content_digest": "sha256:04168cfde1ab84f73abf529d42485b662d59c0da58276e888d9c0d48636580ce"
+}
