@@ -179,23 +179,30 @@ async function main(): Promise<void> {
   }
 
   const footer = el("footer", { class: "app-footer" }, [
-    `Engine version ${getEngineVersion()}, offline, no network calls.`,
+    el("span", {}, [`Engine version ${getEngineVersion()}, offline, no network calls.`]),
+    el("span", { class: "app-footer-status fd-shell__label" }, [
+      "Repository pending C2 · Demo pending C3 · Methodology in repository docs",
+    ]),
   ]);
 
   replaceChildren(appRoot, [
-    el("div", { class: "app-shell" }, [
+    el("div", { class: "app-shell fd-shell" }, [
       el("header", { class: "app-header" }, [
-        el("h1", {}, ["Limen"]),
+        el("p", { class: "app-eyebrow fd-shell__label" }, ["Offline lab / context selection"]),
+        el("h1", { class: "fd-shell__identity" }, ["Limen"]),
         el("p", { class: "app-tagline" }, [
-          "A deterministic lab for comparing context-selection strategies under fixed token budgets.",
+          "Compare two fixed mechanisms against one scenario and see what the budget keeps.",
         ]),
       ]),
-      el("div", { class: "non-claims-banner", attrs: { role: "note" } }, [
-        el("p", {}, [
-          "Limen does not claim to benchmark real model quality. It isolates the context-construction decision so its tradeoffs are visible and reproducible.",
-        ]),
-        el("p", {}, [
-          "Metrics evaluate selected context against annotated expected facts; they do not claim downstream LLM answer accuracy.",
+      el("details", { class: "non-claims-disclosure" }, [
+        el("summary", {}, ["Scope and non-claims"]),
+        el("div", { class: "non-claims-banner", attrs: { role: "note" } }, [
+          el("p", {}, [
+            "Limen does not claim to benchmark real model quality. It isolates the context-construction decision so its tradeoffs are visible and reproducible.",
+          ]),
+          el("p", {}, [
+            "Metrics evaluate selected context against annotated expected facts; they do not claim downstream LLM answer accuracy.",
+          ]),
         ]),
       ]),
       el(
@@ -203,11 +210,19 @@ async function main(): Promise<void> {
         { class: "controls-panel", attrs: { "aria-label": "Scenario and budget controls" } },
         [scenarioSelector.element, budgetControl.element],
       ),
-      el("div", { class: "columns-grid" }, [columnA.element, columnB.element]),
-      el("section", { class: "comparison-section" }, [
-        el("h2", { class: "section-title" }, ["Comparison"]),
+      el("section", { class: "comparison-section comparison-section-sticky" }, [
+        el("div", { class: "comparison-heading" }, [
+          el("div", {}, [
+            el("p", { class: "section-kicker fd-shell__label" }, ["Decision readout"]),
+            el("h2", { class: "section-title" }, ["Comparison summary"]),
+          ]),
+          el("p", { class: "comparison-helper" }, [
+            "A minus B. Values retain their denominators; differences are descriptive, not a verdict.",
+          ]),
+        ]),
         comparisonContainer,
       ]),
+      el("div", { class: "columns-grid" }, [columnA.element, columnB.element]),
       footer,
       liveRegion.element,
     ]),

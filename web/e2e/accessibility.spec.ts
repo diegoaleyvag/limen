@@ -9,6 +9,15 @@ async function waitForBothColumnsReady(page: import("@playwright/test").Page) {
   });
 }
 
+async function openEvidence(page: import("@playwright/test").Page, index = 0) {
+  const disclosure = page
+    .locator(".strategy-column")
+    .nth(0)
+    .locator(".evidence-disclosure")
+    .nth(index);
+  await disclosure.locator("summary").click();
+}
+
 test.describe("keyboard operability", () => {
   test("budget range slider is reachable and adjustable by keyboard alone", async ({ page }) => {
     await page.goto("/");
@@ -158,6 +167,7 @@ test.describe("color-independent status indicators", () => {
   }) => {
     await page.goto("/");
     await waitForBothColumnsReady(page);
+    await openEvidence(page);
 
     const badges = page.locator(".strategy-column").nth(0).locator(".source-item .badge").first();
     await expect(badges).toBeVisible();
@@ -199,6 +209,7 @@ test.describe("color-independent status indicators", () => {
   }) => {
     await page.goto("/");
     await waitForBothColumnsReady(page);
+    await openEvidence(page, 1);
 
     const factBadges = page.locator(".strategy-column").nth(0).locator(".fact-item .badge");
     const count = await factBadges.count();

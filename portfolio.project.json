@@ -8,8 +8,37 @@
  "buildStarted": "2026-08-13",
  "status": "building",
  "summary": "A deterministic lab for comparing context-selection strategies under fixed budgets.",
- "capabilities": ["context budgeting", "strategy comparison", "traceable selection"],
- "evidence": [],
+ "capabilities": [
+   {
+     "label": "Context budgeting",
+     "detail": "Adjust a fixed token budget and inspect exactly what each strategy keeps, clips, or drops."
+   },
+   {
+     "label": "Strategy comparison",
+     "detail": "Run two deterministic, versioned strategies against the same authored scenario and compare their metrics."
+   },
+   {
+     "label": "Traceable selection",
+     "detail": "Read source provenance, required-fact coverage, contradiction outcomes, and the recorded decision trace."
+   }
+ ],
+ "evidence": [
+   {
+     "type": "Architecture",
+     "description": "Rust core and the thin WASM adapter keep selection, metrics, and digesting in one implementation.",
+     "reference": "README.md#architecture-at-a-glance"
+   },
+   {
+     "type": "Offline verification",
+     "description": "The static browser build runs the compiled engine without server, model, or runtime network requests.",
+     "reference": "HANDOFF.md#verification-results"
+   },
+   {
+     "type": "Artifact integrity",
+     "description": "Trial downloads preserve the engine's canonical JSON string and result digest byte for byte.",
+     "reference": "HANDOFF.md#integrity-requirements-and-how-each-is-satisfied"
+   }
+ ],
  "links": {
  "repository": null,
  "demo": null,

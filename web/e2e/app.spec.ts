@@ -10,6 +10,15 @@ async function waitForBothColumnsReady(page: import("@playwright/test").Page) {
   });
 }
 
+async function openEvidence(page: import("@playwright/test").Page, index = 0) {
+  const disclosure = page
+    .locator(".strategy-column")
+    .nth(0)
+    .locator(".evidence-disclosure")
+    .nth(index);
+  await disclosure.locator("summary").click();
+}
+
 test.describe("real WASM loading and trial execution", () => {
   test("loads the compiled WASM engine in a real browser and renders a real trial result", async ({
     page,
@@ -32,6 +41,7 @@ test.describe("real WASM loading and trial execution", () => {
 
     // A real trial result renders: the source list has real entries, and the metrics summary
     // shows real numbers (not placeholders).
+    await openEvidence(page);
     const sourceItemsA = page.locator(".strategy-column").nth(0).locator(".source-item");
     await expect(sourceItemsA.first()).toBeVisible();
     const countA = await sourceItemsA.count();
