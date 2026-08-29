@@ -15,7 +15,7 @@ readonly TOOL_ROOT="${HOME}/.cache/limen-vercel-toolchain/${NODE_VERSION}-${RUST
 readonly NODE_ROOT="${TOOL_ROOT}/node-v${NODE_VERSION}-linux-x64"
 readonly RUSTUP_HOME="${TOOL_ROOT}/rustup-home"
 readonly CARGO_HOME="${TOOL_ROOT}/cargo-home"
-readonly RUSTUP_BIN="${TOOL_ROOT}/rustup-bin/rustup"
+readonly RUSTUP_BIN="${CARGO_HOME}/bin/rustup"
 readonly WASM_PACK_BIN="${TOOL_ROOT}/bin/wasm-pack"
 
 die() {
@@ -86,19 +86,18 @@ ensure_rust() {
     "$RUSTUP_SHA256" \
     "$rustup_installer"
   chmod 0755 "$rustup_installer"
-  mkdir -p "$TOOL_ROOT/rustup-bin" "$RUSTUP_HOME" "$CARGO_HOME"
+  mkdir -p "$RUSTUP_HOME" "$CARGO_HOME"
 
   if [[ ! -x "$RUSTUP_BIN" ]]; then
     env RUSTUP_HOME="$RUSTUP_HOME" CARGO_HOME="$CARGO_HOME" "$rustup_installer" \
       -y \
       --default-toolchain none \
       --profile minimal \
-      --no-modify-path \
-      --install-dir "${TOOL_ROOT}/rustup-bin"
+      --no-modify-path
   fi
 
   export RUSTUP_HOME CARGO_HOME
-  export PATH="${TOOL_ROOT}/rustup-bin:${CARGO_HOME}/bin:${NODE_ROOT}/bin:${TOOL_ROOT}/bin:${PATH}"
+  export PATH="${CARGO_HOME}/bin:${NODE_ROOT}/bin:${TOOL_ROOT}/bin:${PATH}"
 
   local installed_rustc
   installed_rustc="$("$RUSTUP_BIN" run "$RUST_VERSION" rustc --version 2>/dev/null || true)"
@@ -156,12 +155,12 @@ setup_toolchain() {
 case "${1:-}" in
   install)
     setup_toolchain
-    export PATH="${NODE_ROOT}/bin:${TOOL_ROOT}/rustup-bin:${CARGO_HOME}/bin:${TOOL_ROOT}/bin:${PATH}"
+    export PATH="${NODE_ROOT}/bin:${CARGO_HOME}/bin:${TOOL_ROOT}/bin:${PATH}"
     cd web && npm ci
     ;;
   build)
     setup_toolchain
-    export PATH="${NODE_ROOT}/bin:${TOOL_ROOT}/rustup-bin:${CARGO_HOME}/bin:${TOOL_ROOT}/bin:${PATH}"
+    export PATH="${NODE_ROOT}/bin:${CARGO_HOME}/bin:${TOOL_ROOT}/bin:${PATH}"
     cd web && npm run build
     ;;
   *)
