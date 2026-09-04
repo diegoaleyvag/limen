@@ -40,8 +40,8 @@
    },
    {
      "type": "production deployment",
-     "description": "C8 Git READY production + smoke stable/immutable + public",
-     "reference": "https://five-decisions-limen-5497od7vu-atomiczdaemons-projects.vercel.app + dpl_312G2buHuu15M19CMBwqEVaNZrRw + main@abc411d32a2a19bf4d5de6dbece706abaf246415"
+    "description": "C8 Git READY, public, smoke PASS; dpl_312G2buHuu15M19CMBwqEVaNZrRw; main@abc411d32a2a19bf4d5de6dbece706abaf246415",
+    "reference": "https://five-decisions-limen-5497od7vu-atomiczdaemons-projects.vercel.app"
    }
  ],
  "links": {
