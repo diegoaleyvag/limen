@@ -32,6 +32,10 @@ const XML_NAMESPACE_ALLOWLIST = new Set([
   "http://www.w3.org/2000/xmlns/",
 ]);
 
+// User-initiated footer link to the public repository. Not fetched at load time; excluded from
+// the offline-runtime claim the same way XML namespace URIs are (inert until clicked).
+const PUBLIC_SOURCE_LINK_ALLOWLIST = new Set(["https://github.com/diegoaleyvag/limen"]);
+
 const SCANNED_EXTENSIONS = new Set([".html", ".js", ".css", ".mjs", ".json", ".map"]);
 
 const ABSOLUTE_URL_RE = /\bhttps?:\/\/[^\s"'<>)\\]+/g;
@@ -57,19 +61,39 @@ function collectFiles(dir) {
   return out;
 }
 
+function normalizeMatchedUrl(raw) {
+  // Minified bundles can glue template-literal delimiters or attribute separators onto URLs.
+  return raw.replace(/[),.;`]+$/, "").split(/[`'"<>\s,]/)[0];
+}
+
+function isAllowlistedExternalUrl(url) {
+  const normalized = normalizeMatchedUrl(url);
+  if (PUBLIC_SOURCE_LINK_ALLOWLIST.has(normalized)) return true;
+  for (const allowed of PUBLIC_SOURCE_LINK_ALLOWLIST) {
+    if (normalized.startsWith(`${allowed}/`)) return true;
+  }
+  return false;
+}
+
 function findViolations(filePath) {
   const text = readFileSync(filePath, "utf-8");
   const violations = [];
 
   for (const match of text.matchAll(ABSOLUTE_URL_RE)) {
-    const url = match[0].replace(/[),.;]+$/, ""); // trim trailing punctuation from prose/comments
+    const url = normalizeMatchedUrl(match[0]);
     let host;
     try {
       host = new URL(url).origin + "/";
     } catch {
       host = url;
     }
-    if (XML_NAMESPACE_ALLOWLIST.has(url) || XML_NAMESPACE_ALLOWLIST.has(host)) continue;
+    if (
+      XML_NAMESPACE_ALLOWLIST.has(url) ||
+      XML_NAMESPACE_ALLOWLIST.has(host) ||
+      isAllowlistedExternalUrl(url)
+    ) {
+      continue;
+    }
     violations.push({ url, index: match.index });
   }
 
