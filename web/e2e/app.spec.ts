@@ -50,6 +50,10 @@ test.describe("real WASM loading and trial execution", () => {
     const footer = page.locator(".app-footer");
     await expect(footer).toContainText("Engine version");
     await expect(footer).toContainText("offline");
+    await expect(footer.locator('a[href="https://github.com/diegoaleyvag/limen"]')).toHaveText(
+      "Source on GitHub",
+    );
+    await expect(footer).toContainText("Methodology in repository docs");
   });
 
   test("changing scenario, strategy, and budget produces a new real trial result", async ({

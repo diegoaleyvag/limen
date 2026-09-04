@@ -28,7 +28,7 @@ ScenarioManifest --> Rust core (limen-core) --> thin WASM adapter (limen-wasm) -
 - **The browser has no parallel implementation.** `web/src` (a static Vite + TypeScript UI) calls
   the compiled WASM module for every decision and only parses a *copy* of its JSON for rendering;
   the exact string the engine returns is what byte-exact downloads write to disk. See
-  [`docs/adr/0001-rust-core-compiled-to-wasm.md`](docs/adr/0001-rust-core-compiled-to-wasm.md) for
+  [`docs/adr/0001-rust-core-compiled-to-wasm-thin-adapter.md`](docs/adr/0001-rust-core-compiled-to-wasm-thin-adapter.md) for
   why this is what makes "native and browser results are the same implementation" achievable and
   testable.
 
@@ -78,12 +78,12 @@ cargo fmt --check                                             # formatting check
 cargo clippy --workspace --all-targets -- -D warnings         # lint, warnings as errors
 ```
 
-`cargo test --workspace` runs 180 tests: unit tests across every module, 8 property-based tests
-(`crates/limen-core/tests/property_tests.rs`), the 75-fixture golden-matrix regression test
-(`tests/golden_fixtures.rs`), schema-freshness and golden-fixture-vs-schema validation, and
-scenario structural-coverage tests. It does **not** run the WASM parity suite (see below); that
-requires the `wasm32-unknown-unknown` target and `wasm-pack test`, and is `#[cfg(target_arch =
-"wasm32")]`-gated so a native `cargo test` run correctly skips it.
+`cargo test --workspace` runs the full native workspace suite: unit tests across every module,
+property-based tests (`crates/limen-core/tests/property_tests.rs`), the 75-fixture golden-matrix
+regression test (`tests/golden_fixtures.rs`), schema-freshness and golden-fixture-vs-schema
+validation, and scenario structural-coverage tests. It does **not** run the WASM parity suite
+(see below); that requires the `wasm32-unknown-unknown` target and `wasm-pack test`, and is
+`#[cfg(target_arch = "wasm32")]`-gated so a native `cargo test` run correctly skips it.
 
 ### Building the WASM package
 
@@ -114,9 +114,9 @@ Then, from `web/`:
 
 ```bash
 npm run dev              # Vite dev server (rebuilds the WASM package first via predev)
-npm test                 # Vitest unit/DOM suite (62 tests across 8 files)
+npm test                 # Vitest unit/DOM suite
 npm run test:e2e:install # one-time Playwright Chromium browser install
-npm run test:e2e         # Playwright e2e suite (22 tests: WASM loading, a11y, responsive, downloads, offline)
+npm run test:e2e         # Playwright e2e suite (WASM loading, a11y, responsive, downloads, offline)
 npm run typecheck        # TypeScript typecheck of web/src
 npm run typecheck:e2e    # TypeScript typecheck of web/e2e
 npm run lint             # Biome check
@@ -145,5 +145,5 @@ cargo run -p limen-core --example generate_golden_fixtures  # regenerate crates/
 
 ## Verification summary
 
-See [`HANDOFF.md`](HANDOFF.md) for the full verification results (test counts, golden-fixture
-parity, e2e coverage) and the integrity requirements a reviewer should check.
+See [`HANDOFF.md`](HANDOFF.md) for the full verification matrix (golden-fixture parity, e2e
+coverage) and the integrity requirements a reviewer should check.
