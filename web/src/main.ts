@@ -191,7 +191,18 @@ async function main(): Promise<void> {
         },
         ["Source on GitHub"],
       ),
-      " · Methodology in repository docs",
+      " · ",
+      el(
+        "a",
+        {
+          attrs: {
+            href: "https://github.com/diegoaleyvag/limen/blob/5dc60e4b5a95b3f51fa1d08529d403b0a31da5c1/docs/STRATEGIES.md",
+            target: "_blank",
+            rel: "noopener noreferrer",
+          },
+        },
+        ["Methodology in repository docs"],
+      ),
     ]),
   ]);
 

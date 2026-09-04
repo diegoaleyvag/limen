@@ -53,7 +53,11 @@ test.describe("real WASM loading and trial execution", () => {
     await expect(footer.locator('a[href="https://github.com/diegoaleyvag/limen"]')).toHaveText(
       "Source on GitHub",
     );
-    await expect(footer).toContainText("Methodology in repository docs");
+    await expect(
+      footer.locator(
+        'a[href="https://github.com/diegoaleyvag/limen/blob/5dc60e4b5a95b3f51fa1d08529d403b0a31da5c1/docs/STRATEGIES.md"]',
+      ),
+    ).toHaveText("Methodology in repository docs");
   });
 
   test("changing scenario, strategy, and budget produces a new real trial result", async ({
