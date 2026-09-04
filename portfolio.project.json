@@ -6,7 +6,7 @@
  "decision": "What belongs in context?",
  "learningOrigin": "2026-05",
  "buildStarted": "2026-08-13",
- "status": "building",
+ "status": "verified",
  "summary": "A deterministic lab for comparing context-selection strategies under fixed budgets.",
  "capabilities": [
    {
