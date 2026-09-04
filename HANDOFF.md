@@ -36,17 +36,14 @@ any of that logic. Every result is a byte-exact, re-hashable JSON artifact.
 
 All commands below were re-run in this worktree immediately before writing this document.
 
-- **`cargo test --workspace`: 184 tests, all passing.** Breakdown: 153 unit tests in
-  `limen-core`, 12 unit tests in `limen-wasm`, plus 19 across five `limen-core` integration-test
-  files -- 8 property-based tests (`property_tests.rs`, covering budget safety, byte-identical
-  repeatability of `select`, total-order sortedness of selections, `resolve_strategy`
-  never-panics/rejects-unknown, and malformed-manifest mutations always caught), 3 golden-fixture
-  regression tests, 2 golden-vs-schema validation tests, 4 scenario structural-coverage tests, and
-  2 schema-freshness tests. (`crates/limen-wasm/tests/wasm_parity.rs` is `#[cfg(target_arch =
-  "wasm32")]`-gated and correctly contributes 0 tests to this native run.) The count grew from 180
-  by +4 in `limen-core`'s unit tests: a cross-review-driven correction to the contradiction
-  `Split`/`PartialWithinRetained` rule (see below) replaced/added metrics test coverage (net +2)
-  and added a new `validate_manifest` rule with its own coverage (net +2).
+- **`cargo test --workspace`: full native suite, all passing.** Coverage spans unit tests in
+  `limen-core` and `limen-wasm`, plus integration tests across five `limen-core` files -- property
+  tests (`property_tests.rs`, covering budget safety, byte-identical repeatability of `select`,
+  total-order sortedness of selections, `resolve_strategy` never-panics/rejects-unknown, and
+  malformed-manifest mutations always caught), golden-fixture regression tests, golden-vs-schema
+  validation, scenario structural-coverage tests, and schema-freshness tests. (`crates/limen-wasm/
+  tests/wasm_parity.rs` is `#[cfg(target_arch = "wasm32")]`-gated and correctly contributes 0
+  tests to this native run.)
 - **`cargo fmt --check` and `cargo clippy --workspace --all-targets -- -D warnings`: both clean.**
 - **75-fixture golden matrix, native/WASM digest parity: proven, not just claimed.**
   `crates/limen-core/tests/golden/` holds 75 checked-in canonical `TrialResult` JSON files (3
@@ -72,8 +69,8 @@ All commands below were re-run in this worktree immediately before writing this 
   `"dropped_no_extractable_content"`). See `docs/METRICS.md` and `metrics.rs`'s module doc comment
   for the full rule, and `metrics.rs`'s test module for two hand-built tests plus two tests that
   exercise the real `recency@1` and `retrieval-ranking@1` strategy implementations end to end.
-- **Vitest: 62 tests across 8 files, all passing** (`web/`: `npm test`).
-- **Playwright e2e: 22 tests, all passing** (`web/`: `npm run test:e2e`), covering real WASM
+- **Vitest: full unit/DOM suite, all passing** (`web/`: `npm test`).
+- **Playwright e2e: full suite, all passing** (`web/`: `npm run test:e2e`), covering real WASM
   loading, keyboard budget/strategy controls, screen-reader-relevant structure, color-independent
   status indicators, mobile stacking, reduced motion, byte-exact downloads, and same-origin-only
   network access during a full interaction session.

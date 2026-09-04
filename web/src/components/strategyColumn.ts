@@ -124,9 +124,16 @@ export function createStrategyColumn(
     replaceChildren(body, [
       el("h3", { class: "subsection-title" }, ["Budget timeline"]),
       createTimeline(manifest.items, parsed.selection.selection),
-      el("h3", { class: "subsection-title" }, ["Source items"]),
-      createSourceList(manifest.items, parsed.selection.selection, manifest.annotations),
-      createFactsList(manifest.annotations, parsed.metrics.fact_recall),
+      el("details", { class: "evidence-disclosure" }, [
+        el("summary", {}, ["Evidence: source items"]),
+        createSourceList(manifest.items, parsed.selection.selection, manifest.annotations),
+      ]),
+      el("details", { class: "evidence-disclosure" }, [
+        el("summary", {}, [
+          `Required facts: ${parsed.metrics.fact_recall.retained} / ${parsed.metrics.fact_recall.required} retained`,
+        ]),
+        createFactsList(manifest.annotations, parsed.metrics.fact_recall),
+      ]),
       createContradictionsSection(parsed.metrics.contradictions),
       createMetricsSummary(parsed.metrics),
       createDecisionTrace(parsed.selection.trace),
