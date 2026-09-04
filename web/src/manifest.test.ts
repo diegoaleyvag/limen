@@ -103,13 +103,13 @@ function validationErrors(value: JsonValue): string[] {
 }
 
 describe("Five Decisions portfolio manifest", () => {
-  it("matches the vendored exact schema and keeps demo/methodology links conservative", () => {
+  it("matches the vendored exact schema and records released manifest links", () => {
     expect(validationErrors(manifest as JsonValue)).toEqual([]);
     expect(manifest.capabilities.every((capability) => typeof capability === "object")).toBe(true);
     expect(manifest.evidence.every((entry) => typeof entry.reference === "string")).toBe(true);
     expect(manifest.links).toEqual({
       repository: "https://github.com/diegoaleyvag/limen",
-      demo: null,
+      demo: "https://five-decisions-limen.vercel.app",
       methodology: null,
     });
   });
