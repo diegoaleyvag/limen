@@ -181,12 +181,16 @@ async function main(): Promise<void> {
   const footer = el("footer", { class: "app-footer" }, [
     el("span", {}, [`Engine version ${getEngineVersion()}, offline, no network calls.`]),
     el("span", { class: "app-footer-status fd-shell__label" }, [
-      el("a", {
-        attrs: {
-          href: "https://github.com/diegoaleyvag/limen",
-          rel: "noopener noreferrer",
+      el(
+        "a",
+        {
+          attrs: {
+            href: "https://github.com/diegoaleyvag/limen",
+            rel: "noopener noreferrer",
+          },
         },
-      }, ["Source on GitHub"]),
+        ["Source on GitHub"],
+      ),
       " · Methodology in repository docs",
     ]),
   ]);
