@@ -47,6 +47,6 @@
  "links": {
  "repository": "https://github.com/diegoaleyvag/limen",
  "demo": "https://five-decisions-limen.vercel.app",
- "methodology": null
+ "methodology": "https://github.com/diegoaleyvag/limen/blob/5dc60e4b5a95b3f51fa1d08529d403b0a31da5c1/docs/STRATEGIES.md"
  }
 }
