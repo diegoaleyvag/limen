@@ -1,5 +1,15 @@
 # Handoff
 
+**Status boundary (2026-09-05):** this document is the foundation cross-review handoff, written
+before `portfolio.project.json`'s status advanced to its current **`released`** state (populated
+`demo`/`methodology` links and a promoted production deployment recorded as evidence — see
+`README.md` and `portfolio.project.json`). The verification results, integrity requirements, and
+review-scrutiny notes below remain the accurate historical record of that foundation work and are
+kept verbatim; its section anchors are also referenced directly from `portfolio.project.json`'s
+evidence list, so headings below are unchanged.
+
+---
+
 This document is written for an incoming cross-review by a different reviewer/model. It
 summarizes what was built, what was verified (with real numbers pulled from this repo, not
 approximations), where the integrity requirements are enforced, what deserves close scrutiny, and
